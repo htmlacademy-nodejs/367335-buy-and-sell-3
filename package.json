@@ -1,0 +1,25 @@
+{
+  "name": "367335-buy-and-sell-3",
+  "version": "1.0.0",
+  "description": "Куплю. Продам",
+  "main": "./src/service/service.js",
+  "scripts": {
+    "eslint": "eslint --ext .js src/",
+    "start": "node ./src/service/service.js",
+    "test": "npm run eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efiand/367335-buy-and-sell-3.git"
+  },
+  "author": "Andrey Efimov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/efiand/367335-buy-and-sell-3/issues"
+  },
+  "homepage": "https://github.com/efiand/367335-buy-and-sell-3#readme",
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "eslint-config-htmlacademy": "0.5.2"
+  }
+}
