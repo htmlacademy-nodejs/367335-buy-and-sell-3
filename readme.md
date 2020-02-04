@@ -1,7 +1,7 @@
 # Учебный проект «Куплю. Продам» [![Build status][travis-image]][travis-url]
 
 * Студент: [Андрей Ефимов](https://up.htmlacademy.ru/nodejs/3/user/367335).
-* Наставник: `Неизвестно`.
+* Наставник: [Вадим Шевяков](https://up.htmlacademy.ru/nodejs/3/user/574589).
 
 ---
 
