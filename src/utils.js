@@ -51,6 +51,7 @@ const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
 
 /**
  * Выводит результат в консоль в зависимости от режима из справочника `LogMode`
+ * Завершает процесс, если режим связан с существующим кодом выхода
  *
  * @param {*} res
  * @param {String} [modeName=`DEFAULT`]
@@ -58,7 +59,7 @@ const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
 const outputRes = (res, modeName = `DEFAULT`) => {
   const {method, color, exitCode} = LogMode[modeName];
   console[method](chalk[color](res));
-  if (exitCode) {
+  if (ExitCode[exitCode]) {
     process.exit(ExitCode[exitCode]);
   }
 };
