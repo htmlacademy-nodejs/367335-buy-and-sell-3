@@ -1,11 +1,11 @@
 'use strict';
 
 const {version} = require(`../../../package`);
-const {blue} = require(`chalk`);
+const {outputRes} = require(`../../utils`);
 
 module.exports = {
   name: `--version`,
   run() {
-    console.info(blue(version));
+    outputRes(version, `INFO`);
   }
 };
