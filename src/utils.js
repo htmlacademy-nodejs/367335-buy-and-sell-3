@@ -2,22 +2,15 @@
 
 const {LogMode} = require(`./constants`);
 const chalk = require(`chalk`);
+const {readFile} = require(`fs`).promises;
 
 /**
- * Перетасовка массива по алгоритму Фишера—Йетса.
+ * Выводит число с ведущим нулем для цифры
  *
- * @param {Array} array
- * @return {Array}
+ * @param {Number} num
+ * @return {String}
  */
-const shuffle = (array) => {
-  const resultArray = array.slice();
-  for (let i = resultArray.length - 1; i > 0; i--) {
-    const randomNumber = Math.floor(Math.random() * (i + 1));
-    [resultArray[randomNumber], resultArray[i]] = [resultArray[i], resultArray[randomNumber]];
-  }
-
-  return resultArray;
-};
+const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
 
 /**
  * Возвращает случайное число в диапазоне
@@ -42,14 +35,6 @@ const getRandomInt = (min, max) => {
 const getRandomItem = (someArray) => someArray[getRandomInt(0, someArray.length - 1)];
 
 /**
- * Выводит число с ведущим нулем для цифры
- *
- * @param {Number} num
- * @return {String}
- */
-const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
-
-/**
  * Выводит результат в консоль в зависимости от режима из справочника `LogMode`
  *
  * @param {*} res
@@ -60,10 +45,44 @@ const outputRes = (res, modeName = `DEFAULT`) => {
   console[method](chalk[color](res));
 };
 
+/**
+ * Возврашает массив строк файла
+ * Пустые строки и строки из одних пробельных символов игнорируются
+ *
+ * @param {String} filePath
+ * @return {Array}
+ */
+const readContent = async (filePath) => {
+  try {
+    const content = await readFile(filePath, `utf8`);
+    return content.split(`\n`).filter((item) => item.trim());
+  } catch (err) {
+    outputRes(err, `ERROR`);
+    return [];
+  }
+};
+
+/**
+ * Перетасовка массива по алгоритму Фишера—Йетса.
+ *
+ * @param {Array} array
+ * @return {Array}
+ */
+const shuffle = (array) => {
+  const resultArray = array.slice();
+  for (let i = resultArray.length - 1; i > 0; i--) {
+    const randomNumber = Math.floor(Math.random() * (i + 1));
+    [resultArray[randomNumber], resultArray[i]] = [resultArray[i], resultArray[randomNumber]];
+  }
+
+  return resultArray;
+};
+
 module.exports = {
-  shuffle,
+  formatNumWithLead0,
   getRandomInt,
   getRandomItem,
-  formatNumWithLead0,
-  outputRes
+  outputRes,
+  readContent,
+  shuffle
 };

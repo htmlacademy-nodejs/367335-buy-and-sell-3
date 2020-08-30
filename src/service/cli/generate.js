@@ -1,41 +1,14 @@
 'use strict';
 
 const {ExitCode} = require(`../../constants`);
-const {getRandomInt, getRandomItem, formatNumWithLead0, outputRes, shuffle} = require(`../../utils`);
+const {getRandomInt, getRandomItem, formatNumWithLead0, outputRes, readContent, shuffle} = require(`../../utils`);
 const {writeFile} = require(`fs`).promises;
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
-
-const TITLES = [
-  `Продам книги Стивена Кинга`,
-  `Продам новую приставку Sony Playstation 5`,
-  `Продам отличную подборку фильмов на VHS`,
-  `Куплю антиквариат`,
-  `Куплю породистого кота`,
-];
-
-const SENTENCES = [
-  `Товар в отличном состоянии.`,
-  `Пользовались бережно и только по большим праздникам.`,
-  `Продаю с болью в сердце...`,
-  `Бонусом отдам все аксессуары.`,
-  `Даю недельную гарантию.`,
-  `Если товар не понравится — верну всё до последней копейки.`,
-  `Это настоящая находка для коллекционера!`,
-  `Если найдёте дешевле — сброшу цену.`,
-  `Таких предложений больше нет!`,
-  `При покупке с меня бесплатная доставка в черте города.`,
-];
-
-const CATEGORIES = [
-  `Книги`,
-  `Разное`,
-  `Посуда`,
-  `Игры`,
-  `Животные`,
-  `Журналы`,
-];
+const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+const FILE_SENTENCES_PATH = `./data/sentences.txt`;
+const FILE_TITLES_PATH = `./data/titles.txt`;
 
 const OfferType = {
   OFFER: `offer`,
@@ -52,11 +25,11 @@ const SumRestrict = {
   MAX: 100000
 };
 
-const generateOffers = (count) => (Array(count).fill({}).map(() => ({
-  category: shuffle(CATEGORIES).slice(0, getRandomInt(0, CATEGORIES.length - 1) || 1),
-  description: shuffle(SENTENCES).slice(1, 5).join(` `),
+const generateOffers = ({count, categories, sentences, titles}) => (Array(count).fill({}).map(() => ({
+  category: shuffle(categories).slice(0, getRandomInt(0, categories.length - 1) || 1),
+  description: shuffle(sentences).slice(1, 5).join(` `),
   picture: `item${formatNumWithLead0(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX))}.jpg`,
-  title: getRandomItem(TITLES),
+  title: getRandomItem(titles),
   type: getRandomItem(Object.values(OfferType)),
   sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX)
 })));
@@ -71,8 +44,13 @@ module.exports = {
       process.exit(ExitCode.ERROR);
     }
 
+    const categories = await readContent(FILE_CATEGORIES_PATH);
+    const sentences = await readContent(FILE_SENTENCES_PATH);
+    const titles = await readContent(FILE_TITLES_PATH);
+    const content = generateOffers({count, categories, sentences, titles});
+
     try {
-      await writeFile(FILE_NAME, JSON.stringify(generateOffers(count)));
+      await writeFile(FILE_NAME, JSON.stringify(content));
       outputRes(`Operation success. File created.`, `SUCCESS`);
     } catch (err) {
       outputRes(`Can't write data to file...`, `ERROR`);
