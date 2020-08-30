@@ -14,8 +14,7 @@ module.exports = {
     },
     ERROR: {
       color: `red`,
-      method: `error`,
-      exitCode: `ERROR`
+      method: `error`
     },
     HELP: {
       color: `gray`,
@@ -27,8 +26,7 @@ module.exports = {
     },
     SUCCESS: {
       color: `green`,
-      method: `info`,
-      exitCode: `SUCCESS`
+      method: `info`
     }
   }
 };

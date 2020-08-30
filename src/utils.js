@@ -1,6 +1,6 @@
 'use strict';
 
-const {ExitCode, LogMode} = require(`./constants`);
+const {LogMode} = require(`./constants`);
 const chalk = require(`chalk`);
 
 /**
@@ -51,17 +51,13 @@ const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
 
 /**
  * Выводит результат в консоль в зависимости от режима из справочника `LogMode`
- * Завершает процесс, если режим связан с существующим кодом выхода
  *
  * @param {*} res
  * @param {String} [modeName=`DEFAULT`]
  */
 const outputRes = (res, modeName = `DEFAULT`) => {
-  const {method, color, exitCode} = LogMode[modeName];
+  const {method, color} = LogMode[modeName];
   console[method](chalk[color](res));
-  if (ExitCode[exitCode]) {
-    process.exit(ExitCode[exitCode]);
-  }
 };
 
 module.exports = {
