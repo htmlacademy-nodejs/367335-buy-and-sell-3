@@ -1,5 +1,6 @@
 'use strict';
 
+const {ExitCode} = require(`../../constants`);
 const {getRandomInt, getRandomItem, formatNumWithLead0, outputRes, shuffle} = require(`../../utils`);
 const {writeFile} = require(`fs`).promises;
 
@@ -67,6 +68,7 @@ module.exports = {
 
     if (count > 1000) {
       outputRes(`Не больше 1000 объявлений`, `ERROR`);
+      process.exit(ExitCode.ERROR);
     }
 
     try {
@@ -74,6 +76,7 @@ module.exports = {
       outputRes(`Operation success. File created.`, `SUCCESS`);
     } catch (err) {
       outputRes(`Can't write data to file...`, `ERROR`);
+      process.exit(ExitCode.ERROR);
     }
   }
 };
