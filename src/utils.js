@@ -53,7 +53,7 @@ const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
  * Выводит результат в консоль в зависимости от режима из справочника `LogMode`
  *
  * @param {*} res
- * @param {String} modeName
+ * @param {String} [modeName=`DEFAULT`]
  */
 const outputRes = (res, modeName = `DEFAULT`) => {
   const {method, color, exitCode} = LogMode[modeName];
