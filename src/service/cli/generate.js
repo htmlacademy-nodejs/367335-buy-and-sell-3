@@ -76,7 +76,6 @@ module.exports = {
       outputRes(`Operation success. File created.`, `SUCCESS`);
     } catch (err) {
       outputRes(`Can't write data to file...`, `ERROR`);
-      process.exit(ExitCode.ERROR);
     }
   }
 };
