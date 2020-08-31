@@ -1,8 +1,8 @@
 'use strict';
 
-const {getRandomInt, getRandomItem, formatNumWithLead0, shuffle} = require(`../../utils`);
-const {writeFile} = require(`fs`);
 const {ExitCode} = require(`../../constants`);
+const {getRandomInt, getRandomItem, formatNumWithLead0, outputRes, shuffle} = require(`../../utils`);
+const {writeFile} = require(`fs`).promises;
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
@@ -63,22 +63,19 @@ const generateOffers = (count) => (Array(count).fill({}).map(() => ({
 
 module.exports = {
   name: `--generate`,
-  run([countStr]) {
+  async run([countStr]) {
     const count = +countStr || DEFAULT_COUNT;
 
     if (count > 1000) {
-      console.error(`Не больше 1000 объявлений`);
+      outputRes(`Не больше 1000 объявлений`, `ERROR`);
       process.exit(ExitCode.ERROR);
     }
 
-    writeFile(FILE_NAME, JSON.stringify(generateOffers(count)), (err) => {
-      if (err) {
-        console.error(`Can't write data to file...`);
-        process.exit(ExitCode.ERROR);
-      }
-
-      console.info(`Operation success. File created.`);
-      process.exit(ExitCode.SUCCESS);
-    });
+    try {
+      await writeFile(FILE_NAME, JSON.stringify(generateOffers(count)));
+      outputRes(`Operation success. File created.`, `SUCCESS`);
+    } catch (err) {
+      outputRes(`Can't write data to file...`, `ERROR`);
+    }
   }
 };

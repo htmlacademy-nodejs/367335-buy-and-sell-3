@@ -6,5 +6,27 @@ module.exports = {
   ExitCode: {
     ERROR: 1,
     SUCCESS: 0
+  },
+  LogMode: {
+    DEFAULT: {
+      color: `white`,
+      method: `log`
+    },
+    ERROR: {
+      color: `red`,
+      method: `error`
+    },
+    HELP: {
+      color: `gray`,
+      method: `info`
+    },
+    INFO: {
+      color: `blue`,
+      method: `info`
+    },
+    SUCCESS: {
+      color: `green`,
+      method: `info`
+    }
   }
 };

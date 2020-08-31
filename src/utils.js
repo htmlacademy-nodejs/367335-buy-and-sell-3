@@ -1,5 +1,8 @@
 'use strict';
 
+const {LogMode} = require(`./constants`);
+const chalk = require(`chalk`);
+
 /**
  * Перетасовка массива по алгоритму Фишера—Йетса.
  *
@@ -46,9 +49,21 @@ const getRandomItem = (someArray) => someArray[getRandomInt(0, someArray.length 
  */
 const formatNumWithLead0 = (num) => `${(num < 10) ? `0` : ``}${num}`;
 
+/**
+ * Выводит результат в консоль в зависимости от режима из справочника `LogMode`
+ *
+ * @param {*} res
+ * @param {String} [modeName=`DEFAULT`]
+ */
+const outputRes = (res, modeName = `DEFAULT`) => {
+  const {method, color} = LogMode[modeName];
+  console[method](chalk[color](res));
+};
+
 module.exports = {
   shuffle,
   getRandomInt,
   getRandomItem,
-  formatNumWithLead0
+  formatNumWithLead0,
+  outputRes
 };
