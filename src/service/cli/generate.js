@@ -1,11 +1,10 @@
 'use strict';
 
-const {ExitCode} = require(`../../constants`);
+const {ExitCode, FILE_NAME} = require(`../../constants`);
 const {getRandomInt, getRandomItem, formatNumWithLead0, outputRes, readContent, shuffle} = require(`../../utils`);
 const {writeFile} = require(`fs`).promises;
 
 const DEFAULT_COUNT = 1;
-const FILE_NAME = `mocks.json`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
@@ -37,7 +36,7 @@ const generateOffers = ({count, categories, sentences, titles}) => (Array(count)
 module.exports = {
   name: `--generate`,
   async run([countStr]) {
-    const count = +countStr || DEFAULT_COUNT;
+    const count = Number.parseInt(countStr) || DEFAULT_COUNT;
 
     if (count > 1000) {
       outputRes(`Не больше 1000 объявлений`, `ERROR`);
