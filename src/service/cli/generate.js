@@ -36,7 +36,7 @@ const generateOffers = ({count, categories, sentences, titles}) => (Array(count)
 module.exports = {
   name: `--generate`,
   async run([countStr]) {
-    const count = Number.parseInt(countStr) || DEFAULT_COUNT;
+    const count = Number.parseInt(countStr, 10) || DEFAULT_COUNT;
 
     if (count > 1000) {
       outputRes(`Не больше 1000 объявлений`, `ERROR`);

@@ -5,6 +5,7 @@
   "main": "./src/service/service.js",
   "scripts": {
     "eslint": "eslint --ext .js src/",
+    "server": "nodemon ./src/service/service.js --server",
     "start": "node ./src/service/service.js",
     "test": "npm run eslint"
   },
@@ -20,7 +21,8 @@
   "homepage": "https://github.com/efiand/367335-buy-and-sell-3#readme",
   "devDependencies": {
     "eslint": "6.8.0",
-    "eslint-config-htmlacademy": "0.5.2"
+    "eslint-config-htmlacademy": "0.5.2",
+    "nodemon": "2.0.4"
   },
   "dependencies": {
     "chalk": "4.1.0"

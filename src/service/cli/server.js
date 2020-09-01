@@ -45,7 +45,7 @@ const onClientConnect = async (req, res) => {
 module.exports = {
   name: `--server`,
   run([customPort]) {
-    const port = Number.parseInt(customPort) || DEFAULT_PORT;
+    const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
 
     createServer(onClientConnect)
       .listen(port)
