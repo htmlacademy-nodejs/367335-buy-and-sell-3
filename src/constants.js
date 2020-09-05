@@ -2,6 +2,7 @@
 
 module.exports = {
   DEFAULT_COMMAND: `--help`,
+  DEFAULT_PORT: 8080,
   DEFAULT_LOCAL_PORT: 3000,
   FILE_NAME: `mocks.json`,
   NOT_FOUND_MSG: `Not found`,
@@ -37,6 +38,23 @@ module.exports = {
     SUCCESS: {
       color: `green`,
       method: `info`
+    }
+  },
+  Services: {
+    LOGIN: {
+      alias: `login`
+    },
+    MY: {
+      alias: `my`
+    },
+    OFFERS: {
+      alias: `offers`
+    },
+    REGISTER: {
+      alias: `register`
+    },
+    SEARCH: {
+      alias: `search`
     }
   }
 };
