@@ -1,6 +1,6 @@
 'use strict';
 
-const {DEFAULT_PORT, FILE_NAME, NOT_FOUND_MSG, HttpCode} = require(`../../constants`);
+const {DEFAULT_LOCAL_PORT, FILE_NAME, NOT_FOUND_MSG, HttpCode} = require(`../../constants`);
 const {outputRes} = require(`../../utils`);
 const {createServer} = require(`http`);
 const {readFile} = require(`fs`).promises;
@@ -45,7 +45,7 @@ const onClientConnect = async (req, res) => {
 module.exports = {
   name: `--server`,
   run([customPort]) {
-    const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
+    const port = Number.parseInt(customPort, 10) || DEFAULT_LOCAL_PORT;
 
     createServer(onClientConnect)
       .listen(port)

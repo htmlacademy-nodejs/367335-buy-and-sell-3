@@ -2,7 +2,7 @@
 
 module.exports = {
   DEFAULT_COMMAND: `--help`,
-  DEFAULT_PORT: 3000,
+  DEFAULT_LOCAL_PORT: 3000,
   FILE_NAME: `mocks.json`,
   NOT_FOUND_MSG: `Not found`,
   USER_ARGV_INDEX: 2,
