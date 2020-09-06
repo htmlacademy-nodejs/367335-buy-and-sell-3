@@ -6,10 +6,10 @@ const servicesList = Object.keys(Services);
 
 const app = express();
 
-app.use(`/`, require(`./routes/index`));
 for (const service of servicesList) {
   const {alias} = Services[service];
   app.use(`/${alias}`, require(`./routes/${alias}`));
 }
+app.use(`/`, require(`./routes/index`));
 
 app.listen(DEFAULT_PORT);
