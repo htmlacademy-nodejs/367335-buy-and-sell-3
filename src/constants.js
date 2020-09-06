@@ -39,22 +39,5 @@ module.exports = {
       color: `green`,
       method: `info`
     }
-  },
-  Services: {
-    LOGIN: {
-      alias: `login`
-    },
-    MY: {
-      alias: `my`
-    },
-    OFFERS: {
-      alias: `offers`
-    },
-    REGISTER: {
-      alias: `register`
-    },
-    SEARCH: {
-      alias: `search`
-    }
   }
 };

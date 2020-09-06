@@ -1,15 +1,14 @@
 'use strict';
 
 const express = require(`express`);
-const {DEFAULT_PORT, Services} = require(`../constants`);
-const servicesList = Object.keys(Services);
-
+const {DEFAULT_PORT} = require(`../constants`);
+const offersRouter = require(`./routes/offers`);
+const myRouter = require(`./routes/my`);
+const indexRouter = require(`./routes/index`);
 const app = express();
 
-for (const service of servicesList) {
-  const {alias} = Services[service];
-  app.use(`/${alias}`, require(`./routes/${alias}`));
-}
-app.use(`/`, require(`./routes/index`));
+app.use(`/offers`, offersRouter);
+app.use(`/my`, myRouter);
+app.use(`/`, indexRouter);
 
 app.listen(DEFAULT_PORT);

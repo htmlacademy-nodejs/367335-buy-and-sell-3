@@ -7,7 +7,7 @@
     "eslint": "eslint --ext .js src/",
     "server": "nodemon ./src/service/service.js --server",
     "start": "node ./src/service/service.js",
-    "start-front-server": "nodemon ./src/express",
+    "start-front-server": "node ./src/express",
     "test": "npm run eslint"
   },
   "repository": {

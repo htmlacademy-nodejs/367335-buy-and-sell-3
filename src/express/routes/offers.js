@@ -1,23 +1,22 @@
 'use strict';
 
-const {Services: {OFFERS}} = require(`../../constants`);
 const {Router} = require(`express`);
 const offersRouter = new Router();
 
 offersRouter.get(`/category/:id`, (req, res) => {
-  res.send(`/${OFFERS.alias}/category/:id`);
+  res.send(`/offers/category/:id`);
 });
 
 offersRouter.get(`/edit/:id`, (req, res) => {
-  res.send(`/${OFFERS.alias}/edit/:id`);
+  res.send(`/offers/edit/:id`);
 });
 
 offersRouter.get(`/add`, (req, res) => {
-  res.send(`/${OFFERS.alias}/add`);
+  res.send(`/offers/add`);
 });
 
 offersRouter.get(`/:id`, (req, res) => {
-  res.send(`/${OFFERS.alias}/:id`);
+  res.send(`/offers/:id`);
 });
 
 module.exports = offersRouter;
