@@ -1,0 +1,16 @@
+extends ../layout
+
+block constants
+  - const htmlClass = `html-not-found`;
+  - const bodyClass = `body-not-found`;
+  - const contentClass = null;
+
+block content
+  section.error
+    h1.error__title 404
+    h2.error__subtitle Страница не найдена
+    include ../partials/error-page-content
+
+block header
+
+block footer
