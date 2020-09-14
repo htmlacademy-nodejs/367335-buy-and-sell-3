@@ -15,9 +15,8 @@ app.use(`/`, indexRouter);
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 
 app.use((req, res) => res.status(400).render(`400`));
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   res.status(500).render(`500`);
-  next();
 });
 
 app.set(`views`, path.resolve(__dirname, `templates/entries`));
