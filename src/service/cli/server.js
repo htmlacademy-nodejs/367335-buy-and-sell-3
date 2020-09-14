@@ -2,59 +2,35 @@
 
 const {DEFAULT_LOCAL_PORT, FILE_NAME, NOT_FOUND_MSG, HttpCode} = require(`../../constants`);
 const {outputRes} = require(`../../utils`);
-const {createServer} = require(`http`);
 const {readFile} = require(`fs`).promises;
+const express = require(`express`);
 
-const getLayout = (message) => `
-<!DOCTYPE html>
-  <html lang="ru">
-  <head>
-    <title>Buy and sell</title>
-  </head>
-  <body>${message}</body>
-</html>`.trim();
+const app = express();
+app.use(express.json());
 
-const sendResponse = (res, statusCode, message) => {
-  res.statusCode = statusCode;
-  res.writeHead(statusCode, {
-    'Content-Type': `text/html; charset=UTF-8`
-  });
-
-  res.end(getLayout(message));
-};
-
-const onClientConnect = async (req, res) => {
-  switch (req.url) {
-    case `/`:
-      try {
-        const fileContent = await readFile(FILE_NAME);
-        const mocks = JSON.parse(fileContent);
-        const message = mocks.map((post) => `<li>${post.title}</li>`).join(``);
-        sendResponse(res, HttpCode.OK, `<ul>${message}</ul>`);
-      } catch (err) {
-        sendResponse(res, HttpCode.NOT_FOUND, NOT_FOUND_MSG);
-      }
-      break;
-
-    default:
-      sendResponse(res, HttpCode.NOT_FOUND, NOT_FOUND_MSG);
-      break;
+app.get(`/offers`, async (req, res) => {
+  try {
+    const fileContent = await readFile(FILE_NAME);
+    res.json(JSON.parse(fileContent));
+  } catch (err) {
+    res.json([]);
   }
-};
+});
+
+app.use((req, res) => res
+  .status(HttpCode.NOT_FOUND)
+  .send(NOT_FOUND_MSG));
 
 module.exports = {
   name: `--server`,
   run([customPort]) {
     const port = Number.parseInt(customPort, 10) || DEFAULT_LOCAL_PORT;
 
-    createServer(onClientConnect)
-      .listen(port)
-      .on(`listening`, (err) => {
-        if (err) {
-          return outputRes(`Ошибка при создании сервера`, `ERROR`);
-        }
-
-        return outputRes(`Ожидаю соединений на ${port}`, `SUCCESS`);
-      });
+    app.listen(port, (err) => {
+      if (err) {
+        return outputRes(`Ошибка при создании сервера`, `ERROR`);
+      }
+      return outputRes(`Ожидаю соединений на ${port}`, `SUCCESS`);
+    });
   }
 };
