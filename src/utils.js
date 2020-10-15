@@ -78,10 +78,29 @@ const shuffle = (array) => {
   return resultArray;
 };
 
+/**
+ * Возвращает случайную последовательность элементов массива заданного размера
+ *
+ * @param {*} {
+ *   list = [],
+ *   start = 0,
+ *   end = 0,
+ *   Restrict = {}
+ * }
+ * @return {Array}
+ */
+const getRandomItems = ({
+  list = [],
+  start = 0,
+  end = 0,
+  Restrict = {}
+}) => shuffle(list.slice()).slice(Restrict.MIN || start, Restrict.MAX || end);
+
 module.exports = {
   formatNumWithLead0,
   getRandomInt,
   getRandomItem,
+  getRandomItems,
   outputRes,
   readContent,
   shuffle
