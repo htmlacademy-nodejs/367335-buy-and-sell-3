@@ -8,6 +8,10 @@ module.exports = {
   GENERATED_ID_LENGTH: 6,
   PUBLIC_DIR: `public`,
   USER_ARGV_INDEX: 2,
+  Env: {
+    DEVELOPMENT: `development`,
+    PRODUCTION: `production`
+  },
   ExitCode: {
     ERROR: 1,
     SUCCESS: 0
