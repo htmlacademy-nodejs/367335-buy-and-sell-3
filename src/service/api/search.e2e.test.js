@@ -169,7 +169,7 @@ describe(`API returns offer based on search query`, () => {
   });
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(StatusCodes.OK));
-  test(`2 offer found`, () => expect(response.body.length).toBe(2));
+  test(`2 offers found`, () => expect(response.body.length).toBe(2));
   test(`Offer has correct id`, () => expect(response.body[0].id).toBe(`Mkh8tu`));
 });
 
