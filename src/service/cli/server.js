@@ -1,7 +1,7 @@
 'use strict';
 
 const {StatusCodes, ReasonPhrases} = require(`http-status-codes`);
-const {DEFAULT_LOCAL_PORT, ExitCode} = require(`../../constants`);
+const {DEFAULT_API_PORT, ExitCode} = require(`../../constants`);
 const express = require(`express`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
@@ -30,14 +30,14 @@ app.use((err, _req, _res, _next) => {
 module.exports = {
   name: `--server`,
   run([customPort]) {
-    const port = Number.parseInt(customPort, 10) || DEFAULT_LOCAL_PORT;
+    const port = Number.parseInt(customPort, 10) || DEFAULT_API_PORT;
 
     try {
       app.listen(port, (err) => {
         if (err) {
-          return logger.error(`Ошибка при создании сервера: ${err.message}`);
+          return logger.error(`An error occured on creating server: ${err.message}`);
         }
-        return logger.info(`Ожидаю соединений на ${port}`);
+        return logger.info(`Waiting for connections on ${port}`);
       });
     } catch (err) {
       logger.error(`An error occured: ${err.message}`);
