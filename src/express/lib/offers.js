@@ -10,7 +10,7 @@ const modifyOffer = (offer) => {
   offer.retinaPicture = offer.picture.replace(`.jpg`, `@2x.jpg`);
   offer.outputPrice = splitNumByThousands(offer.sum);
   return offer;
-}
+};
 
 module.exports = {
   modifyOffer

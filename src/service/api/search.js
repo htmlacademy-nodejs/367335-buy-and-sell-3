@@ -3,7 +3,6 @@
 const {Router} = require(`express`);
 const {StatusCodes} = require(`http-status-codes`);
 
-
 module.exports = (app, service) => {
   const route = new Router();
   app.use(`/search`, route);

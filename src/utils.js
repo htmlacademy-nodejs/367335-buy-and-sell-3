@@ -109,7 +109,7 @@ const splitNumByThousands = (num) => {
   if (str.length < NUM_SPLITTING_THRESHOLD) {
     return str;
   }
-  return str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, `$1 `);
+  return str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, `$1\u00A0`);
 };
 
 module.exports = {
