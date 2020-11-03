@@ -1,14 +1,22 @@
 'use strict';
 
 const {Router} = require(`express`);
-const myRouter = new Router();
+const {modifyOffer} = require(`../lib/offers`);
 
-myRouter.get(`/`, (req, res) => {
-  res.render(`my-tickets`);
+const myRouter = new Router();
+const api = require(`../api`).getAPI();
+
+myRouter.get(`/`, async (req, res) => {
+  const offers = await api.getOffers();
+  offers.forEach(modifyOffer);
+  res.render(`my-tickets`, {offers});
 });
 
-myRouter.get(`/comments`, (req, res) => {
-  res.render(`comments`);
+myRouter.get(`/comments`, async (req, res) => {
+  const offers = await api.getOffers();
+  const restrictedOffers = offers.slice(0, 3);
+  restrictedOffers.forEach(modifyOffer);
+  res.render(`comments`, {offers: restrictedOffers});
 });
 
 module.exports = myRouter;

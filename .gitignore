@@ -16,3 +16,7 @@ build/
 
 # Моки
 mocks.json
+
+# Директория с загруженными изображениями
+src/express/upload/img/*.*
+!src/express/upload/img/.gitkeep

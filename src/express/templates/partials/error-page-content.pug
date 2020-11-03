@@ -1,13 +1,13 @@
 ul.error__list
   li.error__item
-    a(href='/register') Вход и регистрация
+    a(href=`/register`) Вход и регистрация
   li.error__item
-    a(href='/offers/add') Новая публикация
+    a(href=`/offers/add`) Новая публикация
   li.error__item
-    a(href='/') Главная страница
-form.error__search.search.search--small(method='get', action='/search', autocomplete='off')
-  input(type='search', name='search', placeholder='Поиск', aria-label='Поиск')
+    a(href=`/`) Главная страница
+form.error__search.search.search--small(method=`get`, action=`/search`, autocomplete=`off`)
+  input(type=`search`, name=`search`, placeholder=`Поиск`, aria-label=`Поиск`)
   .search__icon
   .search__close-btn
-a.error__logo.logo(href='/')
-  img(src='/img/logo.svg', alt='Логотип Куплю Продам', width='179', height='34')
+a.error__logo.logo(href=`/`)
+  img(src=`/img/logo.svg`, alt=`Логотип Куплю Продам`, width=`179`, height=`34`)

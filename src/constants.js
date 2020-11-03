@@ -3,10 +3,9 @@
 module.exports = {
   DEFAULT_COMMAND: `--help`,
   DEFAULT_PORT: 8080,
-  DEFAULT_LOCAL_PORT: 3000,
+  DEFAULT_API_PORT: 3000,
   FILE_NAME: `mocks.json`,
   GENERATED_ID_LENGTH: 6,
-  PUBLIC_DIR: `public`,
   USER_ARGV_INDEX: 2,
   Env: {
     DEVELOPMENT: `development`,

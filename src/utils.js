@@ -4,6 +4,8 @@ const {LogMode} = require(`./constants`);
 const chalk = require(`chalk`);
 const {readFile} = require(`fs`).promises;
 
+const NUM_SPLITTING_THRESHOLD = 5;
+
 /**
  * Выводит число с ведущим нулем для цифры
  *
@@ -96,6 +98,20 @@ const getRandomItems = ({
   Restrict = {}
 }) => shuffle(list.slice()).slice(Restrict.MIN || start, Restrict.MAX || end);
 
+/**
+ * Возвращает строковое представление пяти- и более -значного числа с отделением тысячных разрядов пробелом
+ *
+ * @param {*} num
+ * @return {String}
+ */
+const splitNumByThousands = (num) => {
+  const str = num.toString();
+  if (str.length < NUM_SPLITTING_THRESHOLD) {
+    return str;
+  }
+  return str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, `$1\u00A0`);
+};
+
 module.exports = {
   formatNumWithLead0,
   getRandomInt,
@@ -103,5 +119,6 @@ module.exports = {
   getRandomItems,
   outputRes,
   readContent,
-  shuffle
+  shuffle,
+  splitNumByThousands
 };
