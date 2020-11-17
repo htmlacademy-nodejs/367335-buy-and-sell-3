@@ -9,25 +9,27 @@ CREATE DATABASE buy_and_sell
   TEMPLATE template0
   CONNECTION LIMIT = -1;
 
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS offers_categories;
+DROP TABLE IF EXISTS offers;
+DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS peoples;
+DROP TYPE IF EXISTS action;
+
 CREATE TABLE peoples (
-	id SERIAL,
+	id SERIAL PRIMARY KEY,
   name VARCHAR (100) NOT NULL,
-  email VARCHAR (100) NOT NULL,
+  email VARCHAR (100) NOT NULL UNIQUE,
   password_hash CHAR (128) NOT NULL,
-  avatar VARCHAR (256) NOT NULL,
-	CONSTRAINT peoples_pk PRIMARY KEY (id, email)
+  avatar VARCHAR (256) NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
 	id SMALLSERIAL PRIMARY KEY,
   title VARCHAR (50) NOT NULL,
-  picture VARCHAR (256)
+  picture VARCHAR (256) UNIQUE
 );
 
-DROP TABLE IF EXISTS offers;
-DROP TYPE IF EXISTS action;
 CREATE TYPE action AS ENUM('buy', 'sell');
 CREATE TABLE offers (
 	id SERIAL PRIMARY KEY,
@@ -43,7 +45,6 @@ CREATE TABLE offers (
 		ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS offers_categories;
 CREATE TABLE offers_categories (
   offer_id INTEGER NOT NULL,
   category_id SMALLINT NOT NULL,
@@ -56,7 +57,6 @@ CREATE TABLE offers_categories (
 		ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS comments;
 CREATE TABLE comments (
 	id SERIAL PRIMARY KEY,
   text VARCHAR (400) NOT NULL,
