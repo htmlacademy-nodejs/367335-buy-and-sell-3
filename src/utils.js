@@ -54,7 +54,7 @@ const outputRes = (res, modeName = `DEFAULT`) => {
  * @param {String} filePath
  * @return {Array}
  */
-const readContent = async (filePath) => {
+const writeFileToArray = async (filePath) => {
   try {
     const content = await readFile(filePath, `utf8`);
     return content.split(`\n`).filter((item) => item.trim());
@@ -118,7 +118,7 @@ module.exports = {
   getRandomItem,
   getRandomItems,
   outputRes,
-  readContent,
+  writeFileToArray,
   shuffle,
   splitNumByThousands
 };
