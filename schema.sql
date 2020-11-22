@@ -37,7 +37,7 @@ CREATE TABLE offers (
   description VARCHAR (1000) NOT NULL,
   picture VARCHAR (256),
   pub_date date NOT NULL DEFAULT current_date,
-  sum SMALLINT NOT NULL DEFAULT 100,
+  sum INTEGER NOT NULL DEFAULT 100,
   type action,
   people_id INTEGER NOT NULL,
 	FOREIGN KEY (people_id) REFERENCES peoples (id)
