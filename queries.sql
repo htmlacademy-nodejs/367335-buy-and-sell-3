@@ -39,7 +39,6 @@ SELECT op.id, op.title, sum, type, description, pub_date, name, email, comments_
   GROUP BY op.id, op.title, sum, type, description, pub_date, name, email, comments_count
   ORDER BY pub_date DESC;
 
-
 --Получить список из 5 свежих комментариев (идентификатор комментария, идентификатор объявления, имя и фамилия автора, текст комментария):
 SELECT c.id, offer_id, p.name AS author, text
   FROM comments c
