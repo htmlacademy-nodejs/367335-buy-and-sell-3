@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+# Файл с переменными окружения
+.env
+
 # Файлы редактора
 .idea
 *.sublime*
@@ -19,4 +22,6 @@ mocks.json
 
 # Директория с загруженными изображениями
 src/express/upload/img/*.*
+
+# Пустой файл для того, чтобы git сохранил папку в системе контроля версий
 !src/express/upload/img/.gitkeep
