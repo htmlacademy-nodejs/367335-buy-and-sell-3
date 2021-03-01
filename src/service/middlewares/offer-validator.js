@@ -1,7 +1,6 @@
 'use strict';
 
 const getValidator = require(`../lib/get-validator`);
-const offerKeys = [`category`, `description`, `picture`, `title`, `type`, `sum`];
+const offerKeys = [`categories`, `description`, `picture`, `title`, `type`, `sum`, `peopleId`];
 
 module.exports = (req, res, next) => getValidator(offerKeys, req, res, next);
-

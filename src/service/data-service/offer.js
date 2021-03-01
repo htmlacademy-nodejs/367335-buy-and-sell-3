@@ -1,44 +1,45 @@
 'use strict';
 
-const {GENERATED_ID_LENGTH} = require(`../../constants`);
-const {nanoid} = require(`nanoid`);
+const Aliase = require(`../models/aliase`);
 
 class OfferService {
-  constructor(offers) {
-    this._offers = offers;
+  constructor({models}) {
+    this._Offer = models.Offer;
+    this._Comment = models.Comment;
+    this._Category = models.Category;
   }
 
-  create(offer) {
-    const newOffer = {
-      id: nanoid(GENERATED_ID_LENGTH),
-      ...offer
-    };
-    this._offers.push(newOffer);
-    return newOffer;
+  async create(offerData) {
+    const offer = await this._Offer.create(offerData);
+    await offer.addCategories(offerData.categories);
+    return offer.get();
   }
 
-  drop(id) {
-    const offer = this.findOne(id);
+  async drop(id) {
+    const deletedRows = await this._Offer.destroy({
+      where: {id}
+    });
+    return !!deletedRows;
+  }
 
-    if (!offer) {
-      return null;
+  async findAll(needComments) {
+    const include = [Aliase.CATEGORIES];
+    if (needComments) {
+      include.push(Aliase.COMMENTS);
     }
-
-    this._offers = this._offers.filter((item) => item.id !== id);
-    return offer;
-  }
-
-  findAll() {
-    return this._offers;
+    const offers = await this._Offer.findAll({include});
+    return offers.map((item) => item.get());
   }
 
   findOne(id) {
-    return this._offers.find((item) => item.id === id);
+    return this._Offer.findByPk(id, {include: Aliase.CATEGORIES});
   }
 
-  update(id, offer) {
-    const oldOffer = this.findOne(id);
-    return Object.assign(oldOffer, offer);
+  async update(id, offer) {
+    const [affectedRows] = await this._Offer.update(offer, {
+      where: {id}
+    });
+    return !!affectedRows;
   }
 }
 

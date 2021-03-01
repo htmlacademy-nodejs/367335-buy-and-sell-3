@@ -8,9 +8,12 @@ const mainRouter = new Router();
 const api = require(`../api`).getAPI();
 
 mainRouter.get(`/`, async (req, res) => {
-  const offers = await api.getOffers();
+  const [offers, categories] = await Promise.all([
+    api.getOffers(),
+    api.getCategories(true)
+  ]);
   offers.forEach(modifyOffer);
-  res.render(`main`, {offers});
+  res.render(`main`, {offers, categories});
 });
 
 mainRouter.get(`/search`, async (req, res) => {

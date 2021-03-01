@@ -44,6 +44,7 @@ CREATE TABLE offers (
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );
+CREATE INDEX ON offers(title);
 
 CREATE TABLE offers_categories (
   offer_id INTEGER NOT NULL,
