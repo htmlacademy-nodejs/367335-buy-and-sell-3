@@ -2,12 +2,12 @@
 
 const {outputRes} = require(`../../utils`);
 const HELP_CONTENT = `
-  Программа формирует файл с данными для API.
+  Программа наполняет БД.
 
   Команды:
   --version:            выводит номер версии
   --help:               печатает этот текст
-  --generate <count>    формирует файл mocks.json
+  --filldb <count>:     наполняет базу данных
 `;
 
 module.exports = {
