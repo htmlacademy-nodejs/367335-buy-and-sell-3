@@ -1,11 +1,9 @@
 'use strict';
 
-const {DataTypes, Model} = require(`sequelize`);
+const {DataTypes} = require(`sequelize`);
 const setVarchar = DataTypes.STRING;
 
-class Category extends Model {}
-
-const define = (sequelize) => Category.init({
+const define = (sequelize) => sequelize.define(`Category`, {
   id: {
     type: DataTypes.SMALLINT,
     primaryKey: true,

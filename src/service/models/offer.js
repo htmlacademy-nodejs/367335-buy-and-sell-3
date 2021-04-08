@@ -1,12 +1,10 @@
 'use strict';
 
-const {DataTypes, Model} = require(`sequelize`);
+const {DataTypes} = require(`sequelize`);
 const setVarchar = DataTypes.STRING;
 const {DEFAULT_SUM, OfferType} = require(`../../constants`);
 
-class Offer extends Model {}
-
-const define = (sequelize) => Offer.init({
+const define = (sequelize) => sequelize.define(`Offer`, {
   title: {
     type: setVarchar(100),
     allowNull: false

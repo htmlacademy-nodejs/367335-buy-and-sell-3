@@ -11,7 +11,7 @@ class OfferService {
 
   async create(offerData) {
     const offer = await this._Offer.create(offerData);
-    // await offer.addCategories(offerData.categories);
+    await offer.addCategories(offerData.categories);
     return offer.get();
   }
 
