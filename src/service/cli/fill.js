@@ -1,6 +1,6 @@
 'use strict';
 
-const {ExitCode} = require(`../../constants`);
+const {ExitCode, OfferType} = require(`../../constants`);
 const {getRandomInt, getRandomItem, getRandomItems, outputRes, writeFileToArray} = require(`../../utils`);
 const {writeFile} = require(`fs`).promises;
 const {nanoid} = require(`nanoid`);
@@ -12,7 +12,6 @@ const SALT_ROUNDS = 10;
 const FIRST_ID = 1;
 
 const DataFilePath = {
-  AUTHORS: `./data/categories.txt`,
   CATEGORIES: `./data/categories.txt`,
   COMMENTS: `./data/comments.txt`,
   PEOPLES: `./data/peoples.txt`,
@@ -36,11 +35,6 @@ const PictureRestrict = {
   MAX: 16
 };
 const imgExtensions = [`jpg`, `png`];
-
-const OfferType = {
-  OFFER: `buy`,
-  SALE: `sell`
-};
 
 const DescriptionsRestrict = {
   MIN: 1,

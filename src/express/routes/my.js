@@ -13,7 +13,7 @@ myRouter.get(`/`, async (req, res) => {
 });
 
 myRouter.get(`/comments`, async (req, res) => {
-  const offers = await api.getOffers();
+  const offers = await api.getOffers({comments: true});
   const restrictedOffers = offers.slice(0, 3);
   restrictedOffers.forEach(modifyOffer);
   res.render(`comments`, {offers: restrictedOffers});

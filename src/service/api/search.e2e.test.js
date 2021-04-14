@@ -2,14 +2,17 @@
 
 const express = require(`express`);
 const request = require(`supertest`);
+const Sequelize = require(`sequelize`);
 const {StatusCodes} = require(`http-status-codes`);
 
+const initDB = require(`../lib/init-db`);
+const generateData = require(`../lib/generate-data`);
 const search = require(`./search`);
 const DataService = require(`../data-service/search`);
-const mockData = [
+const mockCategories = [`Софт`, `Игры`, `Книги`, `Любовные романы`, `Юмор`, `Хит`, `Пословицы`, `Журналы`, `Животные`, `Политика`, `Разное`, `Посуда`];
+const mockOffers = [
   {
-    id: `Opp9hU`,
-    category: [
+    categories: [
       `Животные`,
       `Юмор`,
       `Журналы`,
@@ -24,19 +27,17 @@ const mockData = [
     ],
     comments: [
       {
-        id: `tNIEdn`,
         text: `А где блок питания? Неплохо, но дорого.`
       }
     ],
     description: `Если найдётся хозяин товара, валите всё на нас. Самовывоз в течение дня, вход без масок запрещён. При покупке с меня бесплатная доставка в черте города. Пользовались бережно и только по большим праздникам.`,
     picture: `item15.jpg`,
     title: `Куплю антиквариат`,
-    type: `sale`,
+    type: `sell`,
     sum: 50750
   },
   {
-    id: `HYzW93`,
-    category: [
+    categories: [
       `Юмор`,
       `Журналы`,
       `Софт`,
@@ -47,27 +48,23 @@ const mockData = [
     ],
     comments: [
       {
-        id: `G_lSyW`,
         text: `А где блок питания? Совсем немного... Оплата наличными или перевод на карту? Почему в таком ужасном состоянии? Продаю в связи с переездом. Отрываю от сердца. С чем связана продажа? Почему так дешёво? А сколько игр в комплекте?`
       },
       {
-        id: `3QITPg`,
         text: `Почему в таком ужасном состоянии? А где блок питания? А сколько игр в комплекте? Совсем немного... Неплохо, но дорого. Вы что?! В магазине дешевле. Оплата наличными или перевод на карту?`
       },
       {
-        id: `TrEGcq`,
         text: `Неплохо, но дорого. Оплата наличными или перевод на карту? А где блок питания? А сколько игр в комплекте? Вы что?! В магазине дешевле. Почему в таком ужасном состоянии? С чем связана продажа? Почему так дешёво?`
       }
     ],
     description: `Самовывоз в течение дня, вход без масок запрещён. При покупке с меня бесплатная доставка в черте города. Скидки в честь Дня конституции. Таких предложений больше нет!`,
     picture: `item13.jpg`,
     title: `Отдам почетные грамоты даром`,
-    type: `offer`,
+    type: `buy`,
     sum: 58746
   },
   {
-    id: `G6VAhG`,
-    category: [
+    categories: [
       `Разное`,
       `Животные`,
       `Любовные романы`,
@@ -81,19 +78,17 @@ const mockData = [
     ],
     comments: [
       {
-        id: `lyhWDk`,
         text: `Оплата наличными или перевод на карту? С чем связана продажа? Почему так дешёво? А где блок питания? Совсем немного... Вы что?! В магазине дешевле. А сколько игр в комплекте?`
       }
     ],
     description: `Если товар не понравится — верну всё до последней копейки. Это настоящая находка для коллекционера! При покупке с меня бесплатная доставка в черте города. Самовывоз в течение дня, вход без масок запрещён.`,
     picture: `item02.jpg`,
     title: `Научу писать рандомную фигню за 50 рублей`,
-    type: `sale`,
+    type: `sell`,
     sum: 35101
   },
   {
-    id: `Mkh8tu`,
-    category: [
+    categories: [
       `Книги`,
       `Животные`,
       `Посуда`,
@@ -108,56 +103,55 @@ const mockData = [
     ],
     comments: [
       {
-        id: `ypEZLb`,
         text: `Оплата наличными или перевод на карту? С чем связана продажа? Почему так дешёво? Почему в таком ужасном состоянии? А сколько игр в комплекте? Неплохо, но дорого. А где блок питания? Вы что?! В магазине дешевле.`
       },
       {
-        id: `gRneP1`,
         text: `С чем связана продажа? Почему так дешёво? Неплохо, но дорого. Совсем немного... Вы что?! В магазине дешевле. Почему в таком ужасном состоянии? А сколько игр в комплекте? Продаю в связи с переездом. Отрываю от сердца.`
       }
     ],
     description: `Продаю с болью в сердце... Таких предложений больше нет! Это настоящая находка для коллекционера! Если товар не понравится — верну всё до последней копейки.`,
     picture: `item11.jpg`,
     title: `Куплю человеческие волосы`,
-    type: `sale`,
+    type: `sell`,
     sum: 17590
   },
   {
-    id: `kT24_W`,
-    category: [
+    categories: [
       `Политика`,
       `Разное`,
       `Игры`
     ],
     comments: [
       {
-        id: `n-nRZx`,
         text: `Оплата наличными или перевод на карту? Неплохо, но дорого. А сколько игр в комплекте?`
       },
       {
-        id: `QsuhbX`,
         text: `Вы что?! В магазине дешевле. Почему в таком ужасном состоянии? Продаю в связи с переездом. Отрываю от сердца.`
       },
       {
-        id: `gxX4Fb`,
         text: `Вы что?! В магазине дешевле. С чем связана продажа? Почему так дешёво? Почему в таком ужасном состоянии?`
       },
       {
-        id: `7XQo8W`,
         text: `С чем связана продажа? Почему так дешёво? А где блок питания? А сколько игр в комплекте?`
       }
     ],
     description: `Пользовались бережно и только по большим праздникам. Если найдётся хозяин товара, валите всё на нас. Самовывоз в течение дня, вход без масок запрещён. Скидки в честь Дня конституции.`,
     picture: `item09.jpg`,
     title: `Куплю человеческие волосы`,
-    type: `sale`,
+    type: `sell`,
     sum: 20843
   }
 ];
+const mockPeoples = [`Андрей Рогов`, `Арсений Петухов`];
+
+const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
 
 const app = express();
 app.use(express.json());
-search(app, new DataService(mockData));
+beforeAll(async () => {
+  await initDB(mockDB, generateData({categories: mockCategories, offers: mockOffers, peoples: mockPeoples}));
+  search(app, new DataService(mockDB));
+});
 
 describe(`API returns offer based on search query`, () => {
   let response;
@@ -170,7 +164,7 @@ describe(`API returns offer based on search query`, () => {
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(StatusCodes.OK));
   test(`2 offers found`, () => expect(response.body.length).toBe(2));
-  test(`Offer has correct id`, () => expect(response.body[0].id).toBe(`Mkh8tu`));
+  test(`Offer has correct title`, () => expect(response.body[0].title).toBe(`Куплю человеческие волосы`));
 });
 
 test(`API returns code 404 if nothing is found`, () => request(app)

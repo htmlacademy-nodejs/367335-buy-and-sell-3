@@ -4,6 +4,7 @@ module.exports = {
   DEFAULT_COMMAND: `--help`,
   DEFAULT_PORT: 8080,
   DEFAULT_API_PORT: 3000,
+  DEFAULT_SUM: 100,
   FILE_NAME: `mocks.json`,
   GENERATED_ID_LENGTH: 6,
   USER_ARGV_INDEX: 2,
@@ -36,5 +37,9 @@ module.exports = {
       color: `green`,
       method: `info`
     }
+  },
+  OfferType: {
+    OFFER: `buy`,
+    SALE: `sell`
   }
 };

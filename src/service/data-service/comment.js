@@ -1,35 +1,31 @@
 'use strict';
 
-const {nanoid} = require(`nanoid`);
-const {GENERATED_ID_LENGTH} = require(`../../constants`);
-
 class CommentService {
-  create(offer, comment) {
-    const newComment = {
-      id: nanoid(GENERATED_ID_LENGTH),
+  constructor({models}) {
+    this._Offer = models.Offer;
+    this._Comment = models.Comment;
+  }
+
+  create(offerId, comment) {
+    return this._Comment.create({
+      offerId,
       ...comment
-    };
-
-    offer.comments.push(newComment);
-    return newComment;
+    });
   }
 
-  drop(offer, commentId) {
-    const dropComment = offer.comments
-      .find((item) => item.id === commentId);
+  async drop(id) {
+    const deletedRows = await this._Comment.destroy({
+      where: {id}
+    });
 
-    if (!dropComment) {
-      return null;
-    }
-
-    offer.comments = offer.comments
-      .filter((item) => item.id !== commentId);
-
-    return dropComment;
+    return !!deletedRows;
   }
 
-  findAll(offer) {
-    return offer.comments;
+  findAll(offerId) {
+    return this._Comment.findAll({
+      where: {offerId},
+      raw: true
+    });
   }
 }
 
