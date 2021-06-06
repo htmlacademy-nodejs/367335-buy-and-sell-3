@@ -20,12 +20,13 @@ block content
                     a(href=`#!`) #{category.name}
                 .ticket-card__header
                   h3.ticket-card__title
-                    a(href=`#!`) #{offer.title}
+                    a(href=`offers/${offer.id}`) #{offer.title}
                   p.ticket-card__price
                     span.js-sum #{offer.outputPrice}
                     |  ₽
                 .ticket-card__desc
                   p #{offer.description}
+  +pagination(page, totalPages, 2, `?`)
   section.tickets-list
     h2.visually-hidden Самые обсуждаемые предложения
     .tickets-list__wrapper
