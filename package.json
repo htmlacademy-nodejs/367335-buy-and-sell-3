@@ -4,7 +4,7 @@
   "description": "Куплю. Продам",
   "main": "./src/service/service.js",
   "scripts": {
-    "dev": "nodemon ./src/express",
+    "dev": "cross-env IS_DEV=1 nodemon ./src/express",
     "eslint": "eslint --ext .js src/",
     "jest": "jest",
     "test::rest": "jest .e2e.test.js",

@@ -31,6 +31,16 @@ class OfferService {
     return offers.map((item) => item.get());
   }
 
+  async findPage({limit, offset}) {
+    const {count, rows} = await this._Offer.findAndCountAll({
+      limit,
+      offset,
+      include: [Aliase.CATEGORIES],
+      distinct: true
+    });
+    return {count, offers: rows};
+  }
+
   findOne(id) {
     return this._Offer.findByPk(id, {include: Aliase.CATEGORIES});
   }

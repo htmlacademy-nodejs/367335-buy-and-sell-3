@@ -1,5 +1,7 @@
 block constants
 
+- const assetsMark = IS_DEV ? `?v=${Date.now()}` : ``;
+
 doctype html
 html(class=htmlClass||null, lang=`ru`)
   head
@@ -8,15 +10,48 @@ html(class=htmlClass||null, lang=`ru`)
     meta(name=`viewport`, content=`width=device-width, initial-scale=1.0`)
     meta(http-equiv=`X-UA-Compatible`, content=`ie=edge`)
     title Куплю. Продам
-    link(rel=`stylesheet`, href=`/css/style.min.css`)
+    link(rel=`stylesheet`, href=`/css/style.min.css${assetsMark}`)
+    style.
+      a.active {
+        pointer-events: none;
+      }
   body(class=bodyClass||null)
     mixin ticketLabel(type)
       span(class=attributes.class || `ticket-card__label`) #{type === `offer` ? `Куплю` : `Продам`}
+
+    mixin pagination(page, totalPages, width, prefix)
+      -
+        let start = page - width;
+        let end = page + width;
+        if (start < 1) {
+          end += 1 - start;
+          start = 1;
+        }
+        if (end > totalPages) {
+          start -= end - totalPages;
+          end = totalPages;
+        }
+        if (start < 1) {
+          start = 1;
+        }
+        let i = start - 1
+      .tickets-list__pagination
+        ul.pagination
+          if start > 1
+            li
+              a(href=`${prefix}page=${page - 1}`) Назад
+          while i++ < end
+            li
+              a(class={active: i === page} href=(i === page ? null : `${prefix}page=${i}`))= i
+          if end < totalPages
+            li
+              a(href=`${prefix}page=${page + 1}`) Вперёд
+
     block header
       include partials/header
-    main(class=typeof contentClass === `undefined` ? `page-content` : contentClass)
+    main(class=(typeof contentClass === `undefined` ? `page-content` : contentClass))
       block content
     block footer
       include partials/footer
-    script(src=`/js/vendor.js`)
-    script(src=`/js/main.js`)
+    script(src=`/js/vendor.min.js${assetsMark}`)
+    script(src=`/js/main.min.js${assetsMark}`)
