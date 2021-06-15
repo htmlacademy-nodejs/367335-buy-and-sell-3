@@ -4,16 +4,27 @@ const {Router} = require(`express`);
 const {modifyOffer} = require(`../lib/offers`);
 const declineWord = require(`decline-word`);
 
+const OFFERS_PER_PAGE = 8;
+
 const mainRouter = new Router();
 const api = require(`../api`).getAPI();
 
 mainRouter.get(`/`, async (req, res) => {
-  const [offers, categories] = await Promise.all([
-    api.getOffers(),
+  let {page = 1} = req.query;
+  page = Number(page);
+
+  const limit = OFFERS_PER_PAGE;
+  const offset = (page - 1) * OFFERS_PER_PAGE;
+
+  const [{count, offers}, categories] = await Promise.all([
+    api.getOffers({limit, offset}),
     api.getCategories(true)
   ]);
   offers.forEach(modifyOffer);
-  res.render(`main`, {offers, categories});
+
+  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
+
+  res.render(`main`, {offers, categories, page, totalPages});
 });
 
 mainRouter.get(`/search`, async (req, res) => {

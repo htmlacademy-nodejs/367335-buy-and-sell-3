@@ -12,6 +12,9 @@ const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 const app = express();
 
+const {IS_DEV = false} = process.env;
+app.locals.IS_DEV = Boolean(IS_DEV);
+
 app.use(`/offers`, offersRouter);
 app.use(`/my`, myRouter);
 app.use(`/`, mainRouter);
