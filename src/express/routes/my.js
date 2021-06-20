@@ -9,7 +9,7 @@ const api = require(`../api`).getAPI();
 myRouter.get(`/`, async (req, res) => {
   const offers = await api.getOffers();
   offers.forEach(modifyOffer);
-  res.render(`my-tickets`, {offers});
+  res.render(`my-offers`, {offers});
 });
 
 myRouter.get(`/comments`, async (req, res) => {

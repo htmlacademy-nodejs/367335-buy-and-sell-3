@@ -3,6 +3,7 @@
 const {nanoid} = require(`nanoid`);
 const bcrypt = require(`bcrypt`);
 const {
+  formatNumWithLead0,
   getRandomInt,
   getRandomItem
 } = require(`../../utils`);
@@ -43,9 +44,9 @@ const generatePeople = (name) => {
   };
 };
 
-const generateCategories = (categories) => categories.map((item) => ({
-  title: item,
-  picture: generatePicture()
+const generateCategories = (categories) => categories.map((category, i) => ({
+  title: category,
+  picture: `cat${formatNumWithLead0(i + 1)}.jpg`
 }));
 
 module.exports = ({categories, offers, peoples}) => ({

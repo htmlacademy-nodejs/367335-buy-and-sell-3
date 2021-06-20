@@ -1,26 +1,11 @@
 'use strict';
 
 const {Router} = require(`express`);
-const multer = require(`multer`);
-const path = require(`path`);
-const {nanoid} = require(`nanoid`);
-const {modifyOffer} = require(`../lib/offers`);
-
-const UPLOAD_DIR = `../upload/img/`;
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
-const offersRouter = new Router();
+const {sendOffer} = require(`../lib/offers`);
+const upload = require(`../middlewares/upload`);
 const api = require(`../api`).getAPI();
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: uploadDirAbsolute,
-    filename: (req, file, cb) => {
-      const uniqueName = nanoid(10);
-      const extension = file.originalname.split(`.`).pop();
-      cb(null, `${uniqueName}.${extension}`);
-    }
-  })
-});
+const offersRouter = new Router();
 
 offersRouter.get(`/category/:id`, (req, res) => {
   res.render(`category`);
@@ -28,39 +13,63 @@ offersRouter.get(`/category/:id`, (req, res) => {
 
 offersRouter.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
-  const [offer, categories] = await Promise.all([
-    api.getOffer(id),
-    api.getCategories()
+  const {payload = `{}`, errors = `{}`} = req.query;
+  const [categories, offer] = await Promise.all([
+    api.getCategories(),
+    api.getOffer(id)
   ]);
-  res.render(`ticket-edit`, {offer: modifyOffer(offer), categories});
+  res.render(`offer-edit`, {
+    offer: {...offer, ...JSON.parse(payload)},
+    categories,
+    errors: JSON.parse(errors)
+  });
 });
 
 offersRouter.get(`/add`, async (req, res) => {
+  const {payload = `{}`, errors = `{}`} = req.query;
   const categories = await api.getCategories();
-  res.render(`new-ticket`, {categories});
+  const offer = JSON.parse(payload);
+  if (!offer.categories) {
+    offer.categories = [];
+  }
+  res.render(`offer-edit`, {
+    offer,
+    categories,
+    errors: JSON.parse(errors)
+  });
 });
 
 offersRouter.get(`/:id`, async (req, res) => {
   const {id} = req.params;
-  const offer = api.getOffer(id, true);
-  res.render(`ticket`, {offer});
+  const {payload = `{}`, errors = `{}`} = req.query;
+  const offer = await api.getOffer({id, comments: 1});
+  res.render(`offer`, {
+    offer,
+    payload: JSON.parse(payload),
+    errors: JSON.parse(errors)
+  });
 });
 
-offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
-  const {body, file} = req;
-  const offerData = {
-    picture: file.filename,
-    sum: body.price,
-    type: body.action,
-    description: body.comment,
-    title: body[`ticket-name`],
-    categories: body.category
+offersRouter.post(`/add`, upload.single(`picture`), sendOffer);
+
+offersRouter.put(`/edit/:id`, upload.single(`picture`), sendOffer);
+
+offersRouter.post(`/:id/comments`, async (req, res) => {
+  const {id} = req.params;
+  const commentData = {
+    text: req.body.comment.trim()
   };
+
   try {
-    await api.createOffer(offerData);
-    res.redirect(`/my`);
+    await api.createComment(id, commentData);
+    res.redirect(`/offers/${id}`);
   } catch (err) {
-    res.redirect(`back`);
+    // передаем ранее заполненные данные для пробрасывания в форму
+    const payloadStr = encodeURIComponent(JSON.stringify(commentData));
+
+    const errorStr = encodeURIComponent(JSON.stringify(err.response.data));
+
+    res.redirect(`/offers/${id}?payload=${payloadStr}&errors=${errorStr}`);
   }
 });
 

@@ -4,7 +4,7 @@
   "description": "Куплю. Продам",
   "main": "./src/service/service.js",
   "scripts": {
-    "dev": "cross-env IS_DEV=1 nodemon ./src/express",
+    "dev": "cross-env NODE_ENV=development nodemon ./src/express",
     "eslint": "eslint --ext .js src/",
     "jest": "jest",
     "test::rest": "jest .e2e.test.js",
@@ -42,6 +42,7 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "http-status-codes": "2.1.4",
+    "joi": "17.4.0",
     "multer": "1.4.2",
     "nanoid": "3.1.12",
     "pg": "8.4.2",

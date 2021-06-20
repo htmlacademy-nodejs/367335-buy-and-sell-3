@@ -22,7 +22,7 @@ class OfferService {
     return !!deletedRows;
   }
 
-  async findAll(needComments) {
+  async findAll(needComments = false) {
     const include = [Aliase.CATEGORIES];
     if (needComments) {
       include.push(Aliase.COMMENTS);
@@ -31,7 +31,7 @@ class OfferService {
     return offers.map((item) => item.get());
   }
 
-  async findPage({limit, offset}) {
+  async findPage({limit = 0, offset = 0}) {
     const {count, rows} = await this._Offer.findAndCountAll({
       limit,
       offset,
@@ -41,8 +41,17 @@ class OfferService {
     return {count, offers: rows};
   }
 
-  findOne(id) {
-    return this._Offer.findByPk(id, {include: Aliase.CATEGORIES});
+  async findOne({offerId, comments}) {
+    const include = [Aliase.CATEGORIES];
+    if (Number(comments)) {
+      include.push(Aliase.COMMENTS);
+    }
+
+    const offer = await this._Offer.findByPk(offerId, {include});
+    if (offer) {
+      return offer.get({plain: true});
+    }
+    return offer;
   }
 
   async update(id, offer) {

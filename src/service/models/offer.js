@@ -2,19 +2,20 @@
 
 const {DataTypes} = require(`sequelize`);
 const setVarchar = DataTypes.STRING;
-const {DEFAULT_SUM, OfferType} = require(`../../constants`);
+const setEnum = DataTypes.ENUM;
+const {MinValue, MaxValue, OfferType} = require(`../../constants`);
 
 const define = (sequelize) => sequelize.define(`Offer`, {
   title: {
-    type: setVarchar(100),
+    type: setVarchar(MaxValue.OFFER_TITLE),
     allowNull: false
   },
   description: {
-    type: setVarchar(1000),
+    type: setVarchar(MaxValue.OFFER_TEXT),
     allowNull: false
   },
   picture: {
-    type: setVarchar(256)
+    type: setVarchar(MaxValue.FILENAME)
   },
   pubDate: {
     type: DataTypes.DATE,
@@ -24,10 +25,10 @@ const define = (sequelize) => sequelize.define(`Offer`, {
   sum: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: DEFAULT_SUM
+    defaultValue: MinValue.SUM
   },
   type: {
-    type: DataTypes.ENUM(...Object.values(OfferType)), // eslint-disable-line
+    type: setEnum(...Object.values(OfferType)),
     allowNull: false
   }
 }, {

@@ -1,7 +1,14 @@
 'use strict';
 
 const {ExitCode, OfferType} = require(`../../constants`);
-const {getRandomInt, getRandomItem, getRandomItems, outputRes, writeFileToArray} = require(`../../utils`);
+const {
+  formatNumWithLead0,
+  getRandomInt,
+  getRandomItem,
+  getRandomItems,
+  outputRes,
+  writeFileToArray
+} = require(`../../utils`);
 const {writeFile} = require(`fs`).promises;
 const {nanoid} = require(`nanoid`);
 const bcrypt = require(`bcrypt`);
@@ -68,9 +75,9 @@ const generatePeoples = (peoples) => peoples.map((user) => {
   ];
 });
 
-const generateCategories = (categories) => categories.map((category) => [
+const generateCategories = (categories) => categories.map((category, i) => [
   `'${category}'`,
-  generatePicture()
+  `'cat${formatNumWithLead0(i + 1)}.jpg'`
 ]);
 
 const generateOffers = (offersCount, peoplesCount, sentences, titles) => {

@@ -1,6 +1,7 @@
 'use strict';
 
 const {DataTypes} = require(`sequelize`);
+const {MaxValue} = require(`../../constants`);
 const setVarchar = DataTypes.STRING;
 
 const define = (sequelize) => sequelize.define(`Category`, {
@@ -10,11 +11,11 @@ const define = (sequelize) => sequelize.define(`Category`, {
     autoIncrement: true
   },
   title: {
-    type: setVarchar(50),
+    type: setVarchar(MaxValue.CATEGORY),
     allowNull: false
   },
   picture: {
-    type: setVarchar(256),
+    type: setVarchar(MaxValue.FILENAME),
     unique: true
   }
 }, {
