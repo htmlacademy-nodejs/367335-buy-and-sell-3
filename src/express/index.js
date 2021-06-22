@@ -16,11 +16,12 @@ const app = express();
 // для использования в шаблонизаторе
 app.locals.C = {...Constants, IS_DEV};
 
+app.use(express.urlencoded({extended: false}));
+
 app.use(`/offers`, offersRouter);
 app.use(`/my`, myRouter);
 app.use(`/`, mainRouter);
 
-app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
 

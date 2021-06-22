@@ -1,6 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
+const {StatusCodes} = require(`http-status-codes`);
 const {sendOffer} = require(`../lib/offers`);
 const upload = require(`../middlewares/upload`);
 const api = require(`../api`).getAPI();
@@ -53,6 +54,12 @@ offersRouter.get(`/:id`, async (req, res) => {
 offersRouter.post(`/add`, upload.single(`picture`), sendOffer);
 
 offersRouter.put(`/edit/:id`, upload.single(`picture`), sendOffer);
+
+offersRouter.post(`/:id`, async ({params, body}, res) => {
+  if (body.comment) {
+    res.redirect(StatusCodes.PERMANENT_REDIRECT, `/offers/${params.id}/comments`);
+  }
+});
 
 offersRouter.post(`/:id/comments`, async (req, res) => {
   const {id} = req.params;
