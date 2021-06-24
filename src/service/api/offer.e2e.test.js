@@ -146,8 +146,8 @@ const mockOffers = [
 const sampleOffer = {
   categories: [1, 2],
   title: `Дам погладить котика`,
-  description: `Дам погладить котика. Дорого. Не гербалайф`,
-  picture: `cat.jpg`,
+  description: `Дам погладить котика. Дорого. Не гербалайф. Скидки в честь Дня конституции`,
+  picture: ``, // поле должно быть, но пустая строка валидна
   type: `buy`,
   sum: 100500,
   peopleId: 1
@@ -214,13 +214,44 @@ describe(`API creates an offer if data is valid`, () => {
 describe(`API refuses to create an offer if data is invalid`, () => {
   const newOffer = JSON.parse(JSON.stringify(sampleOffer));
 
-  test(`Without any required property response code is 400`, async () => {
-    const app = await createAPI();
+  let app;
+  beforeAll(async () => {
+    app = await createAPI();
+  });
 
+  test(`Without any required property response code is 400`, async () => {
     for (const key of sampleKeys) {
       const badOffer = {...newOffer};
       delete badOffer[key];
       await request(app).post(`/offers`).send(badOffer).expect(StatusCodes.BAD_REQUEST);
+    }
+  });
+
+  test(`When field type is wrong response code is 400`, async () => {
+    const badOffers = [
+      {...newOffer, sum: true},
+      {...newOffer, picture: 12345},
+      {...newOffer, categories: `Котики`}
+    ];
+    for (const badOffer of badOffers) {
+      await request(app)
+        .post(`/offers`)
+        .send(badOffer)
+        .expect(StatusCodes.BAD_REQUEST);
+    }
+  });
+
+  test(`When field value is wrong response code is 400`, async () => {
+    const badOffers = [
+      {...newOffer, sum: -1},
+      {...newOffer, title: `too short`},
+      {...newOffer, categories: []}
+    ];
+    for (const badOffer of badOffers) {
+      await request(app)
+        .post(`/offers`)
+        .send(badOffer)
+        .expect(StatusCodes.BAD_REQUEST);
     }
   });
 });
@@ -245,9 +276,9 @@ test(`API returns status code 404 when trying to change non-existent offer`, asy
   const validOffer = {
     categories: [1],
     title: `Это валидный`,
-    description: `объект`,
-    picture: `объявления`,
-    type: `однако`,
+    description: `объект объявления (потому что все поля есть и их длина нормальная)`,
+    picture: `объявления, но`,
+    type: `buy`,
     sum: 404,
     peopleId: 1
   };

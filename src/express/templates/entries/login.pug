@@ -7,11 +7,13 @@ block content
         a.login__link(href=`/register`) Регистрация
         h2 Вход
       .form__field.login__field
-        input#user-email.js-field(type=`email`, name=`user-email`, required=``)
+        input#user-email.js-field(type=`email`, name=`email`, maxlength=C.MaxValue.EMAIL, required=``, value=payload.login)
         label(for=`user-email`) Эл. почта
         span Обязательное поле
+      +errorMessage(errors.email)
       .form__field.login__field
-        input#user-password.js-field(type=`password`, name=`user-password`, required=``)
+        input#user-password.js-field(type=`password`, name=`password`, minlength=C.MinValue.PASSWORD, maxlength=C.MaxValue.PASSWORD, required=``)
         label(for=`user-password`) Пароль
         span Обязательное поле
+      +errorMessage(errors.password)
       button.login__button.btn.btn--medium.js-button(type=`submit`, disabled=``) Войти

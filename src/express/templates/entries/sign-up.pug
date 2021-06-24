@@ -14,19 +14,23 @@ block content
             span.sign-up__text-upload Загрузить аватар…
             span.sign-up__text-another Загрузить другой аватар…
       .form__field.sign-up__field
-        input#user-name.js-field(type=`text`, name=`user-name`, required=``)
+        input#user-name.js-field(type=`text`, name=`name`, maxlength=C.MaxValue.EMAIL, pattern=C.USERNAME_PATTERN required=``)
         label(for=`user-name`) Имя и фамилия
         span Обязательное поле
+      +errorMessage(errors.name)
       .form__field.sign-up__field
-        input#user-email.js-field(type=`email`, name=`user-email`, required=``)
+        input#user-email.js-field(type=`email`, name=`email`, maxlength=C.MaxValue.EMAIL, required=``)
         label(for=`user-email`) Эл. почта
         span Обязательное поле
+      +errorMessage(errors.email)
       .form__field.sign-up__field
-        input#user-password.js-field(type=`password`, name=`user-password`, required=``)
+        input#user-password.js-field(type=`password`, name=`password`, minlength=C.MinValue.PASSWORD, maxlength=C.MaxValue.PASSWORD, required=``)
         label(for=`user-password`) Пароль
         span Обязательное поле
+      +errorMessage(errors.password)
       .form__field.sign-up__field
-        input#user-password-again.js-field(type=`password`, name=`user-password-again`, required=``)
+        input#user-password-again.js-field(type=`password`, name=`password_again`, minlength=C.MinValue.PASSWORD, maxlength=C.MaxValue.PASSWORD, required=``)
         label(for=`user-password-again`) Пароль еще раз
         span Обязательное поле
+      +errorMessage(errors.passwordAgain)
       button.sign-up__button.btn.btn--medium.js-button(type=`submit`, disabled=``) Создать аккаунт

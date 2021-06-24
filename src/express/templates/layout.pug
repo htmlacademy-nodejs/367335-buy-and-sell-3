@@ -1,6 +1,6 @@
 block constants
 
-- const assetsMark = IS_DEV ? `?v=${Date.now()}` : ``;
+- const assetsMark = C.IS_DEV ? `?v=${Date.now()}` : ``;
 
 doctype html
 html(class=htmlClass||null, lang=`ru`)
@@ -15,9 +15,20 @@ html(class=htmlClass||null, lang=`ru`)
       a.active {
         pointer-events: none;
       }
+      .server-error {
+        border-radius: 10px;
+        color: white;
+        background-color: tomato;
+        margin: 0 0 1rem;
+        padding: 10px;
+      }
   body(class=bodyClass||null)
     mixin ticketLabel(type)
-      span(class=attributes.class || `ticket-card__label`) #{type === `offer` ? `Куплю` : `Продам`}
+      span(class=attributes.class || `ticket-card__label`) #{type === `buy` ? `Куплю` : `Продам`}
+
+    mixin errorMessage(error = ``)
+      if error
+        .server-error #{error}
 
     mixin pagination(page, totalPages, width, prefix)
       -

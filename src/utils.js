@@ -112,7 +112,17 @@ const splitNumByThousands = (num) => {
   return str.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, `$1\u00A0`);
 };
 
+/**
+ * Возвращает значение в виде массива
+ * Если значение массивом не является, оно оборачивается в массив
+ *
+ * @param {*} value
+ * @return {Array}
+ */
+const ensureArray = (value) => Array.isArray(value) ? value : [value];
+
 module.exports = {
+  ensureArray,
   formatNumWithLead0,
   getRandomInt,
   getRandomItem,

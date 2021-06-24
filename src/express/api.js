@@ -1,7 +1,7 @@
 'use strict';
 
 const axios = require(`axios`);
-const {DEFAULT_API_PORT} = require(`../constants`);
+const {DEFAULT_API_PORT, HttpMethod} = require(`../constants`);
 
 const TIMEOUT = 10000;
 const port = process.env.API_PORT || DEFAULT_API_PORT;
@@ -20,12 +20,12 @@ class API {
     return data;
   }
 
-  getOffers({offset, limit, comments}) {
+  getOffers({offset, limit, comments} = {}) {
     return this._load(`/offers`, {params: {offset, limit, comments}});
   }
 
-  getOffer(id) {
-    return this._load(`/offers/${id}`);
+  getOffer({id, comments = 0}) {
+    return this._load(`/offers/${id}`, {params: {comments}});
   }
 
   search(query) {
@@ -38,7 +38,21 @@ class API {
 
   createOffer(data) {
     return this._load(`/offers`, {
-      method: `POST`,
+      method: HttpMethod.POST,
+      data
+    });
+  }
+
+  updateOffer(id, data) {
+    return this._load(`/offers/${id}`, {
+      method: HttpMethod.PUT,
+      data
+    });
+  }
+
+  createComment(id, data) {
+    return this._load(`/offers/${id}/comments`, {
+      method: HttpMethod.POST,
       data
     });
   }

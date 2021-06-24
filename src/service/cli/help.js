@@ -2,11 +2,10 @@
 
 const {outputRes} = require(`../../utils`);
 const HELP_CONTENT = `
-  Программа наполняет БД.
-
   Команды:
   --version:            выводит номер версии
   --help:               печатает этот текст
+  --server:             запускает сервер API
   --filldb <count>:     наполняет базу данных
 `;
 

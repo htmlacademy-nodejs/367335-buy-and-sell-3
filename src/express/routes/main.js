@@ -1,8 +1,8 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {modifyOffer} = require(`../lib/offers`);
 const declineWord = require(`decline-word`);
+const {modifyOffer} = require(`../lib/offers`);
 
 const OFFERS_PER_PAGE = 8;
 
@@ -43,11 +43,21 @@ mainRouter.get(`/search`, async (req, res) => {
 });
 
 mainRouter.get(`/login`, (req, res) => {
-  res.render(`login`);
+  const {payload = `{}`, errors = `{}`} = req.query;
+
+  res.render(`login`, {
+    payload: JSON.parse(payload),
+    errors: JSON.parse(errors)
+  });
 });
 
 mainRouter.get(`/register`, (req, res) => {
-  res.render(`sign-up`);
+  const {payload = `{}`, errors = `{}`} = req.query;
+
+  res.render(`sign-up`, {
+    payload: JSON.parse(payload),
+    errors: JSON.parse(errors)
+  });
 });
 
 module.exports = mainRouter;

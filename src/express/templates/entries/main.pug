@@ -12,7 +12,7 @@ block content
           li.tickets-list__item
             .ticket-card(class=`ticket-card--color${offer.colorIndex}`)
               .ticket-card__img
-                img(src=`/img/${offer.picture}`, srcset=`/img/${offer.retinaPicture} 2x`, alt=offer.title)
+                img(src=`/img/${offer.picture}`, srcset=`/img/${offer.picture.split(`.`)[0]}@2x.jpg 2x`, alt=offer.title)
               .ticket-card__info
                 +ticketLabel(offer.type)
                 .ticket-card__categories
