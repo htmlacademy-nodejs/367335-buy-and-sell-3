@@ -11,7 +11,7 @@ const offer = require(`./offer`);
 const DataService = require(`../data-service/offer`);
 const CommentsService = require(`../data-service/comment`);
 
-const mockPeoples = [`Андрей Рогов`, `Арсений Петухов`];
+const mockUsers = [`Андрей Рогов`, `Арсений Петухов`];
 const mockCategories = [`Софт`, `Игры`, `Книги`, `Любовные романы`, `Юмор`, `Хит`, `Пословицы`, `Журналы`, `Животные`, `Политика`, `Разное`, `Посуда`];
 const mockOffers = [
   {
@@ -42,7 +42,7 @@ const mockOffers = [
     title: `Научу писать рандомную фигню за 50 рублей`,
     type: `buy`,
     sum: 28275,
-    peopleId: 1
+    userId: 1
   },
   {
     categories: [
@@ -61,7 +61,7 @@ const mockOffers = [
     title: `Продам отличную подборку фильмов на VHS`,
     type: `sell`,
     sum: 1715,
-    peopleId: 1
+    userId: 1
   },
   {
     categories: [
@@ -96,7 +96,7 @@ const mockOffers = [
     title: `Продам новую приставку Sony Playstation 5`,
     type: `buy`,
     sum: 75652,
-    peopleId: 1
+    userId: 1
   },
   {
     categories: [
@@ -124,7 +124,7 @@ const mockOffers = [
     title: `Научу писать рандомную фигню за 50 рублей`,
     type: `buy`,
     sum: 40899,
-    peopleId: 1
+    userId: 1
   },
   {
     categories: [
@@ -140,7 +140,7 @@ const mockOffers = [
     title: `Научу писать рандомную фигню за 50 рублей`,
     type: `sell`,
     sum: 49628,
-    peopleId: 1
+    userId: 1
   }
 ];
 const sampleOffer = {
@@ -150,7 +150,7 @@ const sampleOffer = {
   picture: ``, // поле должно быть, но пустая строка валидна
   type: `buy`,
   sum: 100500,
-  peopleId: 1
+  userId: 1
 };
 const sampleKeys = Object.keys(sampleOffer);
 
@@ -159,7 +159,7 @@ const createAPI = async (logging = false) => {
   await initDB(mockDB, generateData({
     categories: mockCategories.slice(),
     offers: mockOffers.slice(),
-    peoples: mockPeoples.slice()
+    users: mockUsers.slice()
   }));
   const app = express();
   app.use(express.json());
@@ -280,7 +280,7 @@ test(`API returns status code 404 when trying to change non-existent offer`, asy
     picture: `объявления, но`,
     type: `buy`,
     sum: 404,
-    peopleId: 1
+    userId: 1
   };
   const app = await createAPI();
 
@@ -294,7 +294,7 @@ test(`API returns status code 400 when trying to change an offer with invalid da
     description: `объект`,
     picture: `объявления`,
     type: `нет поля sum`,
-    peopleId: 1
+    userId: 1
   };
   const app = await createAPI();
 

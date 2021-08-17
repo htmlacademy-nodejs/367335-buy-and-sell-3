@@ -3,8 +3,8 @@
 const defineModels = require(`../models`);
 const Aliase = require(`../models/aliase`);
 
-module.exports = async (sequelize, {categories, offers, peoples}) => {
-  const {Category, Offer, People} = defineModels(sequelize);
+module.exports = async (sequelize, {categories, offers, users}) => {
+  const {Category, Offer, User} = defineModels(sequelize);
 
   await sequelize.sync({force: true});
 
@@ -15,7 +15,7 @@ module.exports = async (sequelize, {categories, offers, peoples}) => {
     ...acc
   }), {});
 
-  await People.bulkCreate(peoples);
+  await User.bulkCreate(users);
 
   await Promise.all(offers.map(async (offer) => {
     const offerModel = await Offer.create(offer, {include: [Aliase.COMMENTS]});

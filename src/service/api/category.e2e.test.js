@@ -11,7 +11,7 @@ const category = require(`./category`);
 const DataService = require(`../data-service/category`);
 
 const mockCategories = [`Софт`, `Игры`, `Книги`, `Любовные романы`, `Юмор`, `Хит`, `Пословицы`, `Журналы`, `Животные`, `Политика`, `Разное`, `Посуда`];
-const mockPeoples = [`Андрей Рогов`, `Арсений Петухов`];
+const mockUsers = [`Андрей Рогов`, `Арсений Петухов`];
 
 const mockOffers = [
   {
@@ -129,7 +129,7 @@ const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
 const app = express();
 app.use(express.json());
 beforeAll(async () => {
-  await initDB(mockDB, generateData({categories: mockCategories, offers: mockOffers, peoples: mockPeoples}));
+  await initDB(mockDB, generateData({categories: mockCategories, offers: mockOffers, users: mockUsers}));
   category(app, new DataService(mockDB));
 });
 

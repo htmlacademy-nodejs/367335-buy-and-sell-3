@@ -5,7 +5,7 @@ const {MaxValue} = require(`../../constants`);
 const setVarchar = DataTypes.STRING;
 const setChar = DataTypes.CHAR;
 
-const define = (sequelize) => sequelize.define(`People`, {
+const define = (sequelize) => sequelize.define(`User`, {
   name: {
     type: setVarchar(MaxValue.USERNAME),
     allowNull: false
@@ -26,8 +26,8 @@ const define = (sequelize) => sequelize.define(`People`, {
   }
 }, {
   sequelize,
-  modelName: `People`,
-  tableName: `peoples`
+  modelName: `User`,
+  tableName: `users`
 });
 
 module.exports = define;

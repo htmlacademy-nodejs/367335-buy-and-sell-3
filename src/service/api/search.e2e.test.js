@@ -142,14 +142,14 @@ const mockOffers = [
     sum: 20843
   }
 ];
-const mockPeoples = [`Андрей Рогов`, `Арсений Петухов`];
+const mockUsers = [`Андрей Рогов`, `Арсений Петухов`];
 
 const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
 
 const app = express();
 app.use(express.json());
 beforeAll(async () => {
-  await initDB(mockDB, generateData({categories: mockCategories, offers: mockOffers, peoples: mockPeoples}));
+  await initDB(mockDB, generateData({categories: mockCategories, offers: mockOffers, users: mockUsers}));
   search(app, new DataService(mockDB));
 });
 

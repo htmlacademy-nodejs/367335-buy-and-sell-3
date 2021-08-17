@@ -28,7 +28,7 @@ const schema = Joi.object({
     .integer()
     .min(MinValue.SUM)
     .required(),
-  peopleId: Joi.number()
+  userId: Joi.number()
     .integer()
     .min(1)
     .required()

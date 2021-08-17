@@ -21,7 +21,7 @@ const FIRST_ID = 1;
 const DataFilePath = {
   CATEGORIES: `./data/categories.txt`,
   COMMENTS: `./data/comments.txt`,
-  PEOPLES: `./data/peoples.txt`,
+  USERS: `./data/users.txt`,
   SENTENCES: `./data/sentences.txt`,
   TITLES: `./data/titles.txt`
 };
@@ -63,7 +63,7 @@ const generatePicture = () => {
   return `'${nanoid(imgLength).toLowerCase()}.${getRandomItem(imgExtensions)}'`;
 };
 
-const generatePeoples = (peoples) => peoples.map((user) => {
+const generateUsers = (users) => users.map((user) => {
   const emailPrependLength = getRandomInt(EmailRestrict.MIN, EmailRestrict.MAX);
   const emailAppendLength = getRandomInt(EmailRestrict.MIN, EmailRestrict.MAX);
   const passwordLength = getRandomInt(PasswordRestrict.MIN, PasswordRestrict.MAX);
@@ -80,18 +80,18 @@ const generateCategories = (categories) => categories.map((category, i) => [
   `'cat${formatNumWithLead0(i + 1)}.jpg'`
 ]);
 
-const generateOffers = (offersCount, peoplesCount, sentences, titles) => {
+const generateOffers = (offersCount, usersCount, sentences, titles) => {
   return Array(offersCount).fill([]).map(() => [
     `'${getRandomItem(titles)}'`,
     `'${getRandomItems({list: sentences, Restrict: DescriptionsRestrict}).join(` `)}'`,
     generatePicture(),
     getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
     `'${getRandomItem(Object.values(OfferType))}'`,
-    getRandomInt(FIRST_ID, peoplesCount)
+    getRandomInt(FIRST_ID, usersCount)
   ]);
 };
 
-const generateComments = (offersCount, peoplesCount, comments) => {
+const generateComments = (offersCount, usersCount, comments) => {
   const {MIN, MAX} = CommentsRestrict;
   const end = getRandomInt(MIN, comments.length - 1);
 
@@ -99,7 +99,7 @@ const generateComments = (offersCount, peoplesCount, comments) => {
     ...acc,
     ...Array(getRandomInt(MIN, MAX)).fill(offerId).map(() => [
       `'${getRandomItems({list: comments, end}).join(` `)}'`,
-      getRandomInt(FIRST_ID, peoplesCount),
+      getRandomInt(FIRST_ID, usersCount),
       offerId + 1
     ])
   ], []);
@@ -119,26 +119,26 @@ const generateOffersToCategories = (offersCount, categoriesCount) => {
 
 const formatSqlValues = (rows) => `(${rows.map((row) => row.join(`, `)).join(`),\n(`)});`;
 
-const generateSql = ({offersCount, peoples, categories, comments, sentences, titles}) => `-- Тестовое наполнение БД
+const generateSql = ({offersCount, users, categories, comments, sentences, titles}) => `-- Тестовое наполнение БД
 
 -- Добавление пользователей
-INSERT INTO public.peoples (name, email, password_hash, avatar) VALUES
-${formatSqlValues(generatePeoples(peoples))}
+INSERT INTO public.users (name, email, passwordHash, avatar) VALUES
+${formatSqlValues(generateUsers(users))}
 
 -- Добавление категорий
 INSERT INTO public.categories (title, picture) VALUES
 ${formatSqlValues(generateCategories(categories))}
 
 -- Добавление объявлений
-INSERT INTO public.offers (title, description, picture, sum, type, people_id) VALUES
-${formatSqlValues(generateOffers(offersCount, peoples.length, sentences, titles))}
+INSERT INTO public.offers (title, description, picture, sum, type, userId) VALUES
+${formatSqlValues(generateOffers(offersCount, users.length, sentences, titles))}
 
 -- Добавление комментариев
-INSERT INTO public.comments (text, people_id, offer_id) VALUES
-${formatSqlValues(generateComments(offersCount, peoples.length, comments))}
+INSERT INTO public.comments (text, userId, offerId) VALUES
+${formatSqlValues(generateComments(offersCount, users.length, comments))}
 
 -- Связь объявлений с категориями
-INSERT INTO public.offers_categories (offer_id, category_id) VALUES
+INSERT INTO public.OfferCategories (OfferId, CategoryId) VALUES
 ${formatSqlValues(generateOffersToCategories(offersCount, categories.length))}
 `;
 
@@ -152,14 +152,14 @@ module.exports = {
       process.exit(ExitCode.ERROR);
     }
 
-    const [peoples, categories, comments, sentences, titles] = await Promise.all([
-      writeFileToArray(DataFilePath.PEOPLES),
+    const [users, categories, comments, sentences, titles] = await Promise.all([
+      writeFileToArray(DataFilePath.USERS),
       writeFileToArray(DataFilePath.CATEGORIES),
       writeFileToArray(DataFilePath.COMMENTS),
       writeFileToArray(DataFilePath.SENTENCES),
       writeFileToArray(DataFilePath.TITLES)
     ]);
-    const content = generateSql({offersCount, peoples, categories, comments, sentences, titles});
+    const content = generateSql({offersCount, users, categories, comments, sentences, titles});
 
     try {
       await writeFile(FILE_NAME, content);

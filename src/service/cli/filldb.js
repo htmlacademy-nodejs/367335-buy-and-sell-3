@@ -18,7 +18,7 @@ const FIRST_ID = 1;
 const DataFilePath = {
   CATEGORIES: `./data/categories.txt`,
   COMMENTS: `./data/comments.txt`,
-  PEOPLES: `./data/peoples.txt`,
+  USERS: `./data/users.txt`,
   SENTENCES: `./data/sentences.txt`,
   TITLES: `./data/titles.txt`
 };
@@ -50,27 +50,27 @@ const exitWithError = (err) => {
   process.exit(ExitCode.ERROR);
 };
 
-const generateComments = ({comments, count, peoplesCount}) => {
+const generateComments = ({comments, count, usersCount}) => {
   const end = getRandomInt(DEFAULT_COUNT, comments.length - 1);
   return Array(count).fill({}).map(() => ({
     text: getRandomItems({list: comments, end}).join(` `),
-    peopleId: getRandomInt(FIRST_ID, peoplesCount)
+    userId: getRandomInt(FIRST_ID, usersCount)
   }));
 };
 
-const generateOffers = ({count, categories, comments, sentences, titles, peoplesCount}) => {
+const generateOffers = ({count, categories, comments, sentences, titles, usersCount}) => {
   return Array(count).fill({}).map(() => ({
     categories: getRandomItems({
       list: categories,
       end: getRandomInt(DEFAULT_COUNT, categories.length - 1)
     }),
-    comments: generateComments({comments, count: getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), peoplesCount}),
+    comments: generateComments({comments, count: getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX), usersCount}),
     description: getRandomItems({list: sentences, Restrict: DescriptionsRestrict}).join(` `),
     picture: `item${formatNumWithLead0(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX))}.jpg`,
     title: getRandomItem(titles),
     type: getRandomItem(Object.values(OfferType)),
     sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
-    peopleId: getRandomInt(FIRST_ID, peoplesCount)
+    userId: getRandomInt(FIRST_ID, usersCount)
   }));
 };
 
@@ -92,12 +92,12 @@ module.exports = {
     }
     logger.info(`Connection to database established`);
 
-    const [categories, comments, sentences, titles, peoples] = await Promise.all([
+    const [categories, comments, sentences, titles, users] = await Promise.all([
       writeFileToArray(DataFilePath.CATEGORIES),
       writeFileToArray(DataFilePath.COMMENTS),
       writeFileToArray(DataFilePath.SENTENCES),
       writeFileToArray(DataFilePath.TITLES),
-      writeFileToArray(DataFilePath.PEOPLES)
+      writeFileToArray(DataFilePath.USERS)
     ]);
 
     try {
@@ -109,9 +109,9 @@ module.exports = {
           comments,
           sentences,
           titles,
-          peoplesCount: peoples.length
+          usersCount: users.length
         }),
-        peoples
+        users
       }));
     } catch (err) {
       exitWithError(err);

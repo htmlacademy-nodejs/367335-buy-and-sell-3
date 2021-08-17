@@ -32,7 +32,7 @@ const generatePicture = () => {
   return `${nanoid(imgLength).toLowerCase()}.${getRandomItem(IMG_EXTENSIONS)}`;
 };
 
-const generatePeople = (name) => {
+const generateUser = (name) => {
   const emailPrependLength = getRandomInt(EmailRestrict.MIN, EmailRestrict.MAX);
   const emailAppendLength = getRandomInt(EmailRestrict.MIN, EmailRestrict.MAX);
   const passwordLength = getRandomInt(PasswordRestrict.MIN, PasswordRestrict.MAX);
@@ -49,8 +49,8 @@ const generateCategories = (categories) => categories.map((category, i) => ({
   picture: `cat${formatNumWithLead0(i + 1)}.jpg`
 }));
 
-module.exports = ({categories, offers, peoples}) => ({
+module.exports = ({categories, offers, users}) => ({
   categories: generateCategories(categories),
   offers,
-  peoples: peoples.map(generatePeople)
+  users: users.map(generateUser)
 });

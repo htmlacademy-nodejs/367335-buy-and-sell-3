@@ -20,7 +20,7 @@ const sendOffer = async (req, res) => {
   const context = `/offers/${id ? `edit/${id}` : `add`}`;
   const offerData = {
     ...body,
-    peopleId: 1, // временная заглушка для прохождения валидации
+    userId: 1, // временная заглушка для прохождения валидации
     categories: ensureArray(body.categories).map(Number).filter(Boolean),
     sum: Number(body.sum),
     picture: file ? file.filename : body.picture_uploaded // если пользователь не загрузил новую картинку, оставляем прежнюю
