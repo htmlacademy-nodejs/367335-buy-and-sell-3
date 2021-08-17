@@ -20,11 +20,11 @@ const define = (sequelize) => {
   Category.belongsToMany(Offer, {through: OfferCategory, as: Aliase.OFFERS});
   Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES});
 
-  User.hasMany(Comment, {as: Aliase.COMMENTS, foreignKey: `userId`});
-  Comment.belongsTo(User, {foreignKey: `userId`});
-
   User.hasMany(Offer, {as: Aliase.OFFERS, foreignKey: `userId`});
-  Offer.belongsTo(User, {foreignKey: `userId`});
+  Offer.belongsTo(User, {as: Aliase.USERS, foreignKey: `userId`});
+
+  User.hasMany(Comment, {as: Aliase.COMMENTS, foreignKey: `userId`});
+  Comment.belongsTo(User, {as: Aliase.USERS, foreignKey: `userId`});
 
   return {Category, Comment, User, Offer, OfferCategory};
 };

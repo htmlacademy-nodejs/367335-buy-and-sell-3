@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   section.sign-up
-    form.sign-up__form.form(action=`#`, method=`post`, enctype=`multipart/form-data`, autocomplete=`off`)
+    form.sign-up__form.form(action=`/register`, method=`post`, enctype=`multipart/form-data`, autocomplete=`off`, style=`height: auto`)
       .sign-up__title
         h2 Регистрация
         a.sign-up__link(href=`/login`) Вход
@@ -13,13 +13,15 @@ block content
           label(for=`avatar`)
             span.sign-up__text-upload Загрузить аватар…
             span.sign-up__text-another Загрузить другой аватар…
+          //- Отправляем имя загруженной картинки, которое переиспользуется, если не выбрана новая
+          input(type=`hidden`, name=`picture_uploaded`, value=payload.avatar)
       .form__field.sign-up__field
-        input#user-name.js-field(type=`text`, name=`name`, maxlength=C.MaxValue.EMAIL, pattern=C.USERNAME_PATTERN required=``)
+        input#user-name.js-field(type=`text`, name=`name`, value=payload.name, maxlength=C.MaxValue.EMAIL, pattern=C.USERNAME_PATTERN, required=``)
         label(for=`user-name`) Имя и фамилия
         span Обязательное поле
       +errorMessage(errors.name)
       .form__field.sign-up__field
-        input#user-email.js-field(type=`email`, name=`email`, maxlength=C.MaxValue.EMAIL, required=``)
+        input#user-email.js-field(type=`email`, name=`email`, value=payload.email, maxlength=C.MaxValue.EMAIL, required=``)
         label(for=`user-email`) Эл. почта
         span Обязательное поле
       +errorMessage(errors.email)
@@ -29,8 +31,8 @@ block content
         span Обязательное поле
       +errorMessage(errors.password)
       .form__field.sign-up__field
-        input#user-password-again.js-field(type=`password`, name=`password_again`, minlength=C.MinValue.PASSWORD, maxlength=C.MaxValue.PASSWORD, required=``)
+        input#user-password-again.js-field(type=`password`, name=`passwordRepeated`, minlength=C.MinValue.PASSWORD, maxlength=C.MaxValue.PASSWORD, required=``)
         label(for=`user-password-again`) Пароль еще раз
         span Обязательное поле
-      +errorMessage(errors.passwordAgain)
+      +errorMessage(errors.passwordRepeated)
       button.sign-up__button.btn.btn--medium.js-button(type=`submit`, disabled=``) Создать аккаунт

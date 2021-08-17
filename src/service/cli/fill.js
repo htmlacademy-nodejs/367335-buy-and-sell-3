@@ -11,11 +11,10 @@ const {
 } = require(`../../utils`);
 const {writeFile} = require(`fs`).promises;
 const {nanoid} = require(`nanoid`);
-const bcrypt = require(`bcrypt`);
+const {hashSync} = require(`../lib/password`);
 
 const FILE_NAME = `fill-db.sql`;
 const DEFAULT_OFFERS_COUNT = 5;
-const SALT_ROUNDS = 10;
 const FIRST_ID = 1;
 
 const DataFilePath = {
@@ -70,7 +69,7 @@ const generateUsers = (users) => users.map((user) => {
   return [
     `'${user}'`,
     `'${nanoid(emailPrependLength)}@${nanoid(emailAppendLength)}.${getRandomItem(emailDomains)}'`,
-    `'${bcrypt.hashSync(nanoid(passwordLength), SALT_ROUNDS)}'`,
+    `'${hashSync(nanoid(passwordLength))}'`,
     generatePicture()
   ];
 });

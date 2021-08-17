@@ -1,9 +1,12 @@
 'use strict';
 
 const Aliase = require(`../models/aliase`);
+const UserRelatedService = require(`./user-related`);
 
-class OfferService {
+class OfferService extends UserRelatedService {
   constructor({models}) {
+    super({models});
+
     this._Offer = models.Offer;
     this._Comment = models.Comment;
     this._Category = models.Category;
@@ -23,9 +26,13 @@ class OfferService {
   }
 
   async findAll(needComments = false) {
-    const include = [Aliase.CATEGORIES];
+    const include = [Aliase.CATEGORIES, this._userInclusion];
     if (needComments) {
-      include.push(Aliase.COMMENTS);
+      include.push({
+        model: this._Comment,
+        as: Aliase.COMMENTS,
+        include: [this._userInclusion]
+      });
     }
     const offers = await this._Offer.findAll({include});
     return offers.map((item) => item.get());

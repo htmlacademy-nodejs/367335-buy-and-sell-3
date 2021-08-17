@@ -1,14 +1,13 @@
 'use strict';
 
 const {nanoid} = require(`nanoid`);
-const bcrypt = require(`bcrypt`);
+const {hashSync} = require(`../lib/password`);
 const {
   formatNumWithLead0,
   getRandomInt,
   getRandomItem
 } = require(`../../utils`);
 
-const SALT_ROUNDS = 10;
 const EMAIL_DOMAINS = [`ru`, `com`, `net`, `academy`];
 const IMG_EXTENSIONS = [`jpg`, `png`];
 
@@ -39,7 +38,7 @@ const generateUser = (name) => {
   return {
     name,
     email: `${nanoid(emailPrependLength)}@${nanoid(emailAppendLength)}.${getRandomItem(EMAIL_DOMAINS)}`,
-    passwordHash: bcrypt.hashSync(nanoid(passwordLength), SALT_ROUNDS),
+    passwordHash: hashSync(nanoid(passwordLength)),
     avatar: generatePicture()
   };
 };

@@ -30,7 +30,7 @@ const schema = Joi.object({
     .required(),
   userId: Joi.number()
     .integer()
-    .min(1)
+    .positive()
     .required()
 });
 
