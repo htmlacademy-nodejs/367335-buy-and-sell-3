@@ -1,14 +1,13 @@
 'use strict';
 
 const {nanoid} = require(`nanoid`);
-const bcrypt = require(`bcrypt`);
+const {hashSync} = require(`../lib/password`);
 const {
   formatNumWithLead0,
   getRandomInt,
   getRandomItem
 } = require(`../../utils`);
 
-const SALT_ROUNDS = 10;
 const EMAIL_DOMAINS = [`ru`, `com`, `net`, `academy`];
 const IMG_EXTENSIONS = [`jpg`, `png`];
 
@@ -32,14 +31,14 @@ const generatePicture = () => {
   return `${nanoid(imgLength).toLowerCase()}.${getRandomItem(IMG_EXTENSIONS)}`;
 };
 
-const generatePeople = (name) => {
+const generateUser = (name) => {
   const emailPrependLength = getRandomInt(EmailRestrict.MIN, EmailRestrict.MAX);
   const emailAppendLength = getRandomInt(EmailRestrict.MIN, EmailRestrict.MAX);
   const passwordLength = getRandomInt(PasswordRestrict.MIN, PasswordRestrict.MAX);
   return {
     name,
     email: `${nanoid(emailPrependLength)}@${nanoid(emailAppendLength)}.${getRandomItem(EMAIL_DOMAINS)}`,
-    passwordHash: bcrypt.hashSync(nanoid(passwordLength), SALT_ROUNDS),
+    passwordHash: hashSync(nanoid(passwordLength)),
     avatar: generatePicture()
   };
 };
@@ -49,8 +48,8 @@ const generateCategories = (categories) => categories.map((category, i) => ({
   picture: `cat${formatNumWithLead0(i + 1)}.jpg`
 }));
 
-module.exports = ({categories, offers, peoples}) => ({
+module.exports = ({categories, offers, users}) => ({
   categories: generateCategories(categories),
   offers,
-  peoples: peoples.map(generatePeople)
+  users: users.map(generateUser)
 });

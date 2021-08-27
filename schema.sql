@@ -10,17 +10,17 @@ CREATE DATABASE buy_and_sell
   CONNECTION LIMIT = -1;
 
 DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS offers_categories;
+DROP TABLE IF EXISTS OfferCategories;
 DROP TABLE IF EXISTS offers;
 DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS peoples;
+DROP TABLE IF EXISTS users;
 DROP TYPE IF EXISTS action;
 
-CREATE TABLE peoples (
+CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
   name VARCHAR (100) NOT NULL,
   email VARCHAR (100) NOT NULL UNIQUE,
-  password_hash CHAR (128) NOT NULL,
+  passwordHash CHAR (128) NOT NULL,
   avatar VARCHAR (256) NOT NULL UNIQUE
 );
 
@@ -36,24 +36,24 @@ CREATE TABLE offers (
   title VARCHAR (100) NOT NULL,
   description VARCHAR (1000) NOT NULL,
   picture VARCHAR (256),
-  pub_date date NOT NULL DEFAULT current_date,
+  pubDate date NOT NULL DEFAULT current_date,
   sum INTEGER NOT NULL DEFAULT 100,
   type action,
-  people_id INTEGER NOT NULL,
-	FOREIGN KEY (people_id) REFERENCES peoples (id)
+  userId INTEGER NOT NULL,
+	FOREIGN KEY (userId) REFERENCES users (id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );
 CREATE INDEX ON offers(title);
 
-CREATE TABLE offers_categories (
-  offer_id INTEGER NOT NULL,
-  category_id SMALLINT NOT NULL,
-	CONSTRAINT offers_categories_pk PRIMARY KEY (offer_id, category_id),
-	FOREIGN KEY (offer_id) REFERENCES offers (id)
+CREATE TABLE OfferCategories (
+  OfferId INTEGER NOT NULL,
+  CategoryId SMALLINT NOT NULL,
+	CONSTRAINT OfferCategories_pk PRIMARY KEY (OfferId, CategoryId),
+	FOREIGN KEY (OfferId) REFERENCES offers (id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
-	FOREIGN KEY (category_id) REFERENCES categories (id)
+	FOREIGN KEY (CategoryId) REFERENCES categories (id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );
@@ -61,12 +61,12 @@ CREATE TABLE offers_categories (
 CREATE TABLE comments (
 	id SERIAL PRIMARY KEY,
   text VARCHAR (400) NOT NULL,
-  people_id INTEGER NOT NULL,
-  offer_id INTEGER NOT NULL,
-	FOREIGN KEY (people_id) REFERENCES peoples (id)
+  userId INTEGER NOT NULL,
+  offerId INTEGER NOT NULL,
+	FOREIGN KEY (userId) REFERENCES users (id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
-	FOREIGN KEY (offer_id) REFERENCES offers (id)
+	FOREIGN KEY (offerId) REFERENCES offers (id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 );

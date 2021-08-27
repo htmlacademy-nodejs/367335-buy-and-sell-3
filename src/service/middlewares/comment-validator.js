@@ -8,6 +8,10 @@ const schema = Joi.object({
   text: Joi.string()
     .min(MinValue.COMMENT)
     .max(MaxValue.COMMENT)
+    .required(),
+  userId: Joi.number()
+    .integer()
+    .positive()
     .required()
 });
 

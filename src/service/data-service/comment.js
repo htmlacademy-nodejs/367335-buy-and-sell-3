@@ -1,7 +1,11 @@
 'use strict';
 
-class CommentService {
+const UserRelatedService = require(`./user-related`);
+
+class CommentService extends UserRelatedService {
   constructor({models}) {
+    super({models});
+
     this._Offer = models.Offer;
     this._Comment = models.Comment;
   }
@@ -24,6 +28,7 @@ class CommentService {
   findAll(offerId) {
     return this._Comment.findAll({
       where: {offerId},
+      include: [this._userInclusion],
       raw: true
     });
   }
