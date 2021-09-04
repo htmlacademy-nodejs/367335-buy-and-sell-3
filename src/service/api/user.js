@@ -24,14 +24,14 @@ module.exports = (app, service) => {
     const user = await service.findByEmail(email);
     if (!user) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
-        error: `Email is incorrect`
+        email: `Email is incorrect`
       });
     }
 
     const passwordIsCorrect = await passwordUtils.compare(password, user.passwordHash);
     if (!passwordIsCorrect) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
-        error: `Password is incorrect`
+        password: `Password is incorrect`
       });
     }
 

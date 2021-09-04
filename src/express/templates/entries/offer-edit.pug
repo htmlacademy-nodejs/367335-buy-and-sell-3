@@ -50,4 +50,5 @@ block content
                   label.switch__button(for=`sale-field`) Продам
             +errorMessage(errors.type)
             +errorMessage(errors.sum)
+          input(name=`_csrf`, type=`hidden`, value=csrfToken)
           button.form__button.btn.btn--medium.js-button(type=`submit`, disabled=(!offer.title || !offer.description || !offer.categories.length || !offer.sum || !offer.type)) #{offer.id ? `Опубликовать` : `Сохранить`}

@@ -36,6 +36,13 @@ class API {
     return this._load(`/category`, {params: {count}});
   }
 
+  auth(email, password) {
+    return this._load(`/user/auth`, {
+      method: HttpMethod.POST,
+      data: {email, password}
+    });
+  }
+
   createUser(data) {
     return this._load(`/user`, {
       method: HttpMethod.POST,

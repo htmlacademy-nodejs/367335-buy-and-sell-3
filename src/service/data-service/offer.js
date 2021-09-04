@@ -10,6 +10,12 @@ class OfferService extends UserRelatedService {
     this._Offer = models.Offer;
     this._Comment = models.Comment;
     this._Category = models.Category;
+
+    this._commentInclusion = {
+      model: this._Comment,
+      as: Aliase.COMMENTS,
+      include: [this._userInclusion]
+    };
   }
 
   async create(offerData) {
@@ -28,13 +34,12 @@ class OfferService extends UserRelatedService {
   async findAll(needComments = false) {
     const include = [Aliase.CATEGORIES, this._userInclusion];
     if (needComments) {
-      include.push({
-        model: this._Comment,
-        as: Aliase.COMMENTS,
-        include: [this._userInclusion]
-      });
+      include.push(this._commentInclusion);
     }
-    const offers = await this._Offer.findAll({include});
+    const offers = await this._Offer.findAll({
+      include,
+      // order: [[{model: this._Comment, as: Aliase.COMMENTS}, `createdAt`, `desc`]]
+    });
     return offers.map((item) => item.get());
   }
 
@@ -49,12 +54,15 @@ class OfferService extends UserRelatedService {
   }
 
   async findOne({offerId, comments}) {
-    const include = [Aliase.CATEGORIES];
+    const include = [Aliase.CATEGORIES, this._userInclusion];
     if (Number(comments)) {
-      include.push(Aliase.COMMENTS);
+      include.push(this._commentInclusion);
     }
 
-    const offer = await this._Offer.findByPk(offerId, {include});
+    const offer = await this._Offer.findByPk(offerId, {
+      include,
+      // order: [[{model: this._Comment, as: Aliase.COMMENTS}, `createdAt`, `desc`]]
+    });
     if (offer) {
       return offer.get({plain: true});
     }

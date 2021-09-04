@@ -3,7 +3,6 @@
 const {DataTypes} = require(`sequelize`);
 const {MaxValue} = require(`../../constants`);
 const setVarchar = DataTypes.STRING;
-const setChar = DataTypes.CHAR;
 
 const define = (sequelize) => sequelize.define(`User`, {
   name: {
@@ -16,7 +15,7 @@ const define = (sequelize) => sequelize.define(`User`, {
     unique: true
   },
   passwordHash: {
-    type: setChar(MaxValue.PASSWORD),
+    type: setVarchar(MaxValue.PASSWORD),
     allowNull: false
   },
   avatar: {

@@ -121,12 +121,21 @@ const splitNumByThousands = (num) => {
  */
 const ensureArray = (value) => Array.isArray(value) ? value : [value];
 
+/**
+ * Возвращает содержимое объекта в виде строки, закодированное для передачи в URL
+ *
+ * @param {Object} [payload={}]
+ * @return {String}
+ */
+const getUrlJson = (payload = {}) => encodeURIComponent(JSON.stringify(payload));
+
 module.exports = {
   ensureArray,
   formatNumWithLead0,
   getRandomInt,
   getRandomItem,
   getRandomItems,
+  getUrlJson,
   outputRes,
   writeFileToArray,
   shuffle,
